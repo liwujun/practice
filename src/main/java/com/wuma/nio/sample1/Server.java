@@ -99,7 +99,7 @@ public class Server {
 
 
 	/*class RequestThread extends Thread {
-		private Selector selector;
+        private Selector selector;
 		public  RequestThread(Runnable r) {
 			super(r);
 			try {
@@ -126,7 +126,7 @@ public class Server {
 
         public void run() {
 
-            System.out.println("listenning to connection");
+            System.out.println("ConnectionHandler listenning to connection");
             while (true) {
 
                 try {
@@ -137,7 +137,7 @@ public class Server {
                     while (it.hasNext()) {
                         SelectionKey key = it.next();
                         it.remove();
-
+                        System.out.println("m_conn add key " + key);
                         m_conn.add(key);
                         int num = m_reqSelector.size();
                         m_reqSelector.get(idx).wakeup();//防止监听request的进程都在堵塞中
@@ -168,11 +168,12 @@ public class Server {
                 while (true) {
                     selector.select();
                     while ((key = m_conn.poll()) != null) {
+                        System.out.println("key is not null ,key: " + key);
                         ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
                         SocketChannel sc = ssc.accept();//接受一个连接
                         sc.configureBlocking(false);
                         sc.register(selector, SelectionKey.OP_READ);
-                        System.out.println(Thread.currentThread() + "a connected line");
+                        System.out.println(Thread.currentThread() + " a connected line");
                     }
 
                     Set<SelectionKey> keys = selector.selectedKeys();

@@ -36,11 +36,12 @@ public class Client implements Runnable {
         // 连接远程server
         socketChannel = SocketChannel.open();
         // 如果快速的建立了连接,返回true.如果没有建立,则返回false,并在连接后出发Connect事件.
-        Boolean isConnected = socketChannel.connect(new InetSocketAddress("localhost", 3562));
+        Boolean isConnected = socketChannel.connect(new InetSocketAddress("61.135.251.154", 3562));
         socketChannel.configureBlocking(false);
         SelectionKey key = socketChannel.register(selector, SelectionKey.OP_READ);
 
         if (isConnected) {
+            System.out.println("connnected .client send first msg.");
             this.sendFirstMsg();
         } else {
             // 如果连接还在尝试中,则注册connect事件的监听. connect成功以后会出发connect事件.
@@ -60,10 +61,12 @@ public class Client implements Runnable {
                 // 阻塞,等待事件发生,或者1秒超时. num为发生事件的数量.
                 int num = this.selector.select(1000);
                 if (num == 0) {
+                    System.out.println("Client selector.select(1000) is 0 ,idleCounter++");
                     idleCounter++;
                     if (idleCounter > 10) {
                         // 如果server断开了连接,发送消息将失败.
                         try {
+                            System.out.println("idelCounter >10 send msg ");
                             this.sendFirstMsg();
                         } catch (ClosedChannelException e) {
                             e.printStackTrace();
