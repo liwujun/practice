@@ -171,9 +171,13 @@ public class Server {
                         System.out.println("key is not null ,key: " + key);
                         ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
                         SocketChannel sc = ssc.accept();//接受一个连接
-                        sc.configureBlocking(false);
-                        sc.register(selector, SelectionKey.OP_READ);
-                        System.out.println(Thread.currentThread() + " a connected line");
+                        if (sc != null) {
+                            sc.configureBlocking(false);
+                            sc.register(selector, SelectionKey.OP_READ);
+                            System.out.println(Thread.currentThread() + " a connected line");
+                        } else {
+                            System.out.println("sc is null.key:" + key);
+                        }
                     }
 
                     Set<SelectionKey> keys = selector.selectedKeys();
