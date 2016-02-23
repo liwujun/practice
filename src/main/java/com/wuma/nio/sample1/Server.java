@@ -214,7 +214,7 @@ public class Server {
                 int ret;
                 try {
                     while ((ret = sc.read(buffer)) > 0) {
-
+                        readBytes += ret;
                     }
                 } catch (IOException e) {
 
@@ -230,9 +230,11 @@ public class Server {
                     buffer.clear();
             }
             try {
-                System.out.println("server received [ " + msg + "] from client address : " /**+ sc.getRemoteAddress()**/);
+                System.out.println(Thread.currentThread() + " server received [ " + msg + "] from client address : " /**+ sc.getRemoteAddress()**/);
                 Thread.sleep(2000);
-                sc.write(ByteBuffer.wrap((msg + " server response ").getBytes(Charset.forName("utf-8"))));
+                if (msg != null) {
+                    sc.write(ByteBuffer.wrap((msg + " server response ").getBytes(Charset.forName("utf-8"))));
+                }
             } catch (Exception e) {
 
             }

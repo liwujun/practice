@@ -36,7 +36,7 @@ public class Client implements Runnable {
         // 连接远程server
         socketChannel = SocketChannel.open();
         // 如果快速的建立了连接,返回true.如果没有建立,则返回false,并在连接后出发Connect事件.
-        Boolean isConnected = socketChannel.connect(new InetSocketAddress("61.135.251.154", 3562));
+        Boolean isConnected = socketChannel.connect(new InetSocketAddress("localhost", 3562));
         socketChannel.configureBlocking(false);
         SelectionKey key = socketChannel.register(selector, SelectionKey.OP_READ);
 
