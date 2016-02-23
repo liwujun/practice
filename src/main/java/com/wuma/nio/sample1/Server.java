@@ -230,7 +230,9 @@ public class Server {
                     buffer.clear();
             }
             try {
-                System.out.println(Thread.currentThread() + " server received [ " + msg + "] from client address : " /**+ sc.getRemoteAddress()**/);
+                if (msg != null) {
+                    System.out.println(Thread.currentThread() + " server received [ " + msg + "] from client address : " /**+ sc.getRemoteAddress()**/);
+                }
                 Thread.sleep(2000);
                 if (msg != null) {
                     sc.write(ByteBuffer.wrap((msg + " server response ").getBytes(Charset.forName("utf-8"))));
