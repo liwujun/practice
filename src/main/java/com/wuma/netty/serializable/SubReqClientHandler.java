@@ -28,4 +28,14 @@ import io.netty.channel.ChannelHandlerContext;
         req.setUserName("liwujun");
         return req;
     }
+    public void channelRead(ChannelHandlerContext ctx,Object msg) throws Exception{
+        System.out.println("Receive server response: ["+msg+"]");
+    }
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception{
+        ctx.flush();
+    }
+    public void exceptionCaught(ChannelHandlerContext ctx,Throwable cause){
+        cause.printStackTrace();
+        ctx.close();
+    }
 }
