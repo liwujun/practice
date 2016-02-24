@@ -8,7 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
  * Created by liwujun
  * on 2016/2/24 at 17:50
  */
-public class EchoClientHandler extends ChannelHandlerAdapter {
+class EchoClientHandler extends ChannelHandlerAdapter {
     private int counter;
     static final String ECHO_REQ = "Hi, Liwujun. Welcome to America. $_";
 
