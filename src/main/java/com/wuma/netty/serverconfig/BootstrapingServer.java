@@ -16,15 +16,15 @@ public class BootstrapingServer {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         ServerBootstrap b = new ServerBootstrap();
-        b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
-                .childHandler(new SimpleChannelInboundHandler<ByteBuf>() {
-                    @Override
-                    protected void channelRead0(ChannelHandlerContext ctx,
-                                                ByteBuf msg) throws Exception {
-                        System.out.println("Received data");
-                        msg.clear();
-                    }
-                });
+//        b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+//                .childHandler(new SimpleChannelInboundHandler<ByteBuf>() {
+//                    @Override
+//                    protected void channelRead0(ChannelHandlerContext ctx,
+//                                                ByteBuf msg) throws Exception {
+//                        System.out.println("Received data");
+//                        msg.clear();
+//                    }
+//                });
         ChannelFuture f = b.bind(2048);
         f.addListener(new ChannelFutureListener() {
 

@@ -20,34 +20,34 @@ public class BootstrapingFromChannel {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         ServerBootstrap b = new ServerBootstrap();
-        b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
-                .childHandler(new SimpleChannelInboundHandler<ByteBuf>() {
-                    ChannelFuture connectFuture;
-
-                    @Override
-                    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-                        Bootstrap b = new Bootstrap();
-                        b.channel(NioSocketChannel.class).handler(
-                                new SimpleChannelInboundHandler<ByteBuf>() {
-                                    @Override
-                                    protected void channelRead0(ChannelHandlerContext ctx,
-                                                                ByteBuf msg) throws Exception {
-                                        System.out.println("Received data");
-                                        msg.clear();
-                                    }
-                                });
-                        b.group(ctx.channel().eventLoop());
-                        connectFuture = b.connect(new InetSocketAddress("127.0.0.1", 2048));
-                    }
-
-                    @Override
-                    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg)
-                            throws Exception {
-                        if (connectFuture.isDone()) {
-                            // do something with the data
-                        }
-                    }
-                });
+//        b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+//                .childHandler(new SimpleChannelInboundHandler<ByteBuf>() {
+//                    ChannelFuture connectFuture;
+//
+//                    @Override
+//                    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+//                        Bootstrap b = new Bootstrap();
+//                        b.channel(NioSocketChannel.class).handler(
+//                                new SimpleChannelInboundHandler<ByteBuf>() {
+//                                    @Override
+//                                    protected void channelRead0(ChannelHandlerContext ctx,
+//                                                                ByteBuf msg) throws Exception {
+//                                        System.out.println("Received data");
+//                                        msg.clear();
+//                                    }
+//                                });
+//                        b.group(ctx.channel().eventLoop());
+//                        connectFuture = b.connect(new InetSocketAddress("127.0.0.1", 2048));
+//                    }
+//
+//                    @Override
+//                    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg)
+//                            throws Exception {
+//                        if (connectFuture.isDone()) {
+//                            // do something with the data
+//                        }
+//                    }
+//                });
         ChannelFuture f = b.bind(2048);
         f.addListener(new ChannelFutureListener() {
             public void operationComplete(ChannelFuture future) throws Exception {

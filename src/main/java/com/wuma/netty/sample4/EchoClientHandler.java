@@ -12,11 +12,11 @@ import io.netty.util.CharsetUtil;
  * on 2016/2/18 at 9:52
  */
 public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
-        System.out.println("Client received: " +
-                ByteBufUtil.hexDump(msg.readBytes(msg.readableBytes())));
-    }
+//    @Override
+//    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
+//        System.out.println("Client received: " +
+//                ByteBufUtil.hexDump(msg.readBytes(msg.readableBytes())));
+//    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -27,5 +27,10 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
         ctx.close();
+    }
+
+    @Override
+    protected void messageReceived(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
+
     }
 }
