@@ -33,7 +33,7 @@ public class SubReqClient {
 
                         }
                     });
-            ChannelFuture f = b.bind(host, port).sync();
+            ChannelFuture f = b.connect(host, port).sync();
             f.channel().closeFuture().sync();
         } finally {
             group.shutdownGracefully();

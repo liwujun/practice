@@ -25,6 +25,7 @@ import io.netty.channel.ChannelHandlerContext;
         req.setAddress("北京市海淀区中关村二期网易");
         req.setPhoneNumber("xxxxxxxxxxx");
         req.setSubReqID(i);
+        req.setProductName("保时捷");
         req.setUserName("liwujun");
         return req;
     }
