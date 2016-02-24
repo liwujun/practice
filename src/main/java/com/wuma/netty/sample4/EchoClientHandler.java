@@ -11,7 +11,7 @@ import io.netty.util.CharsetUtil;
  * Created by liwujun
  * on 2016/2/18 at 9:52
  */
-public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
+class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 //    @Override
 //    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
 //        System.out.println("Client received: " +

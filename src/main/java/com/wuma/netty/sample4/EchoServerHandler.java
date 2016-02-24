@@ -9,7 +9,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * Created by liwujun
  * on 2016/2/18 at 9:39
  */
-public class EchoServerHandler extends ChannelInboundHandlerAdapter {
+class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 //        ctx.fireChannelRead(msg);
