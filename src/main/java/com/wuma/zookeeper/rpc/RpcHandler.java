@@ -25,7 +25,7 @@ public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
         this.handlerMap = handlerMap;
     }
 
-    @Override
+
     public void channelRead0(final ChannelHandlerContext ctx, RpcRequest request) throws Exception {
         RpcResponse response = new RpcResponse();
         response.setRequestId(request.getRequestId());
@@ -60,5 +60,19 @@ public class RpcHandler extends SimpleChannelInboundHandler<RpcRequest> {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         LOGGER.error("server caught exception", cause);
         ctx.close();
+    }
+
+    @Override
+    protected void messageReceived(ChannelHandlerContext channelHandlerContext, RpcRequest rpcRequest) throws Exception {
+        RpcResponse response = new RpcResponse();
+        response.setRequestId(rpcRequest.getRequestId());
+        try {
+            Object result = handle(rpcRequest);
+            response.setResult(result);
+        } catch (Throwable t) {
+            response.setError(t);
+        }
+        channelHandlerContext.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+
     }
 }
