@@ -11,7 +11,7 @@ public class Biased {
     public static List<Integer> numberList = new Vector<Integer>();
 
     //-XX:+UseBiasedLocking -XX:BiasedLockingStartupDelay=0 -client -Xmx512m -Xms512m
-    //加入以上参数，对新能提升很大
+    //鍔犲叆浠ヤ笂鍙傛暟锛屽鏂拌兘鎻愬崌寰堝ぇ
     public static void main(String[] args) {
         long begin = System.currentTimeMillis();
         int count = 0;

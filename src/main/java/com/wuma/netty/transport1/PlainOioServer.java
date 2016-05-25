@@ -9,7 +9,7 @@ import java.nio.charset.Charset;
 /**
  * Created by liwujun
  * on 2016/2/18 at 11:00
- * ÆÕÍ¨java io ·şÎñ¶Ë
+ * æ™®é€šjava io æœåŠ¡ç«¯
  */
 public class PlainOioServer {
     public void server(int port) throws Exception {

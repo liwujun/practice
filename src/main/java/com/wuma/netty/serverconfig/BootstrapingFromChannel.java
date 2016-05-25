@@ -13,7 +13,7 @@ import java.net.InetSocketAddress;
 /**
  * Created by liwujun
  * on 2016/2/18 at 16:08
- * 从客户端引导
+ * 浠庡鎴风寮曞
  */
 public class BootstrapingFromChannel {
     public static void main(String[] args) throws Exception {

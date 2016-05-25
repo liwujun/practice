@@ -15,7 +15,7 @@ public class UnitT {
         for (int i = 0; i < 10; i++) {
             Random random = new Random(10000);
             Map<String, Object> value_store = new HashMap<String, Object>();
-            value_store.put(random.nextInt() + "", " °∑›" + random.nextInt());
+            value_store.put(random.nextInt() + "", "ÁúÅ‰ªΩ" + random.nextInt());
             list.add(value_store);
         }
         for (int i = 0; i < list.size() - 1; i++) {

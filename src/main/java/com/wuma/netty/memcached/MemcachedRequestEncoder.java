@@ -33,9 +33,9 @@ public class MemcachedRequestEncoder extends MessageToByteEncoder<MemcachedReque
         // next two bytes are reserved, not currently implemented
         // but are required
         out.writeShort(0);
-        // write total body length ( 4 bytes -?©\ 32 bit int)
+        // write total body length ( 4 bytes -?â€ 32 bit int)
         out.writeInt(bodySize);
-        // write opaque ( 4 bytes) -?©\ a 32 bit int that is returned
+        // write opaque ( 4 bytes) -?â€ a 32 bit int that is returned
         // in the response
         out.writeInt(msg.getId());
         // write CAS ( 8 bytes)

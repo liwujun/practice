@@ -18,35 +18,35 @@ public class NettyOioServer {
     public void server(int port) throws Exception {
         final ByteBuf buf = Unpooled.unreleasableBuffer(
                 Unpooled.copiedBuffer("Hi!\r\n", CharsetUtil.UTF_8));
-        //Ê±¼äÑ­»·×é
+        //æ—¶é—´å¾ªç¯ç»„
         EventLoopGroup group = new NioEventLoopGroup();
         try {
-            //?ÓÃÀ´Òıµ¼·şÎñÆ÷ÅäÖÃ
+            //?ç”¨æ¥å¼•å¯¼æœåŠ¡å™¨é…ç½®
             ServerBootstrap b = new ServerBootstrap();
-            //Ê¹ÓÃ OIO×èÈûÄ£Ê½ ????
+            //ä½¿ç”¨ OIOé˜»å¡æ¨¡å¼ ????
             b.group(group).channel(OioServerSocketChannel.class)
                     .localAddress(new InetSocketAddress(port))
-                    //Ö¸¶¨ChannelInitializer ³õÊ¼»¯handlers
+                    //æŒ‡å®šChannelInitializer åˆå§‹åŒ–handlers
                     .childHandler(new ChannelInitializer<Channel>() {
                         @Override
                         protected void initChannel(Channel ch) throws Exception {
 
-                            //Ìí¼ÓÒ»¸öÈëÕ¾µÄhandler µ½ ChannelPipeline
+                            //æ·»åŠ ä¸€ä¸ªå…¥ç«™çš„handler åˆ° ChannelPipeline
                             ch.pipeline().addLast(new ChannelInboundHandlerAdapter() {
                                 @Override
                                 public void channelActive(ChannelHandlerContext ctx) throws Exception {
-                                    //Á¬½Óºó£¬Ğ´ÏûÏ¢µ½¿Í»§¶Ë£¬Ğ´Íêºó±ã¹Ø±ÕÁ¬½Ó
+                                    //è¿æ¥åï¼Œå†™æ¶ˆæ¯åˆ°å®¢æˆ·ç«¯ï¼Œå†™å®Œåä¾¿å…³é—­è¿æ¥
                                     ctx.writeAndFlush(buf.duplicate())
                                             .addListener(ChannelFutureListener.CLOSE);
                                 }
                             });
                         }
                     });
-            //°ó¶¨·şÎñÆ÷½ÓÊÕÁ´½Ó
+            //ç»‘å®šæœåŠ¡å™¨æ¥æ”¶é“¾æ¥
             ChannelFuture f = b.bind().sync();
             f.channel().closeFuture().sync();
         } catch (Exception e) {
-            //ÊÍ·ÅËùÓĞÁ´½Ó
+            //é‡Šæ”¾æ‰€æœ‰é“¾æ¥
             group.shutdownGracefully();
         }
     }

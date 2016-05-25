@@ -9,7 +9,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 /**
  * Created by liwujun
  * on 2016/2/18 at 16:01
- * �첽�󶨶˿�
+ * 异步绑定端口
  */
 public class BootstrapingServer {
     public static void main(String[] args) throws Exception {

@@ -24,7 +24,7 @@ public class PlainNioServer {
         ServerSocket serverSocket = serverChannel.socket();
         //bind server to port
         serverSocket.bind(new InetSocketAddress(port));
-        //set to non-?©\blocking
+        //set to non-?‚Äêblocking
         serverChannel.configureBlocking(false);
         //register ServerSocket to selector and specify that it is interested in new accepted clients
         serverChannel.register(selector, SelectionKey.OP_ACCEPT);
