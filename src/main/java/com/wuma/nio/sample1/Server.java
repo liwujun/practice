@@ -87,7 +87,7 @@ public class Server {
         public void run() {
             SelectionKey key;
             while (true) {
-                //太消耗cpu//应该要加一个wait，但是这样就有锁了
+                //太锟斤拷锟斤拷cpu//应锟斤拷要锟斤拷一锟斤拷wait锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷
                 while ((key = m_req.poll()) != null) {
                     ProcessRequest preq = new ProcessRequest();
                     preq.setKey(key);
@@ -118,7 +118,7 @@ public class Server {
 		}
 	}*/
 
-    //监视请求连接
+
     class ConnectionHander implements Runnable {
 
         int idx = 0;
@@ -140,7 +140,7 @@ public class Server {
                         System.out.println("m_conn add key " + key);
                         m_conn.add(key);
                         int num = m_reqSelector.size();
-                        m_reqSelector.get(idx).wakeup();//防止监听request的进程都在堵塞中
+                        m_reqSelector.get(idx).wakeup();//锟斤拷止锟斤拷锟斤拷request锟侥斤拷锟教讹拷锟节讹拷锟斤拷锟斤拷
                         idx = (idx + 1) % num;
                     }
 
@@ -153,7 +153,7 @@ public class Server {
         }
     }
 
-    //监视读操作
+
     class RequestHander implements Runnable {
         private Selector selector;
 
@@ -170,7 +170,7 @@ public class Server {
                     while ((key = m_conn.poll()) != null) {
                         System.out.println("key is not null ,key: " + key);
                         ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
-                        SocketChannel sc = ssc.accept();//接受一个连接
+                        SocketChannel sc = ssc.accept();//锟斤拷锟斤拷一锟斤拷锟斤拷锟斤拷
                         if (sc != null) {
                             sc.configureBlocking(false);
                             sc.register(selector, SelectionKey.OP_READ);
@@ -197,7 +197,7 @@ public class Server {
         }
     }
 
-    //读数据并进行处理和发送返回
+
     class ProcessRequest implements Runnable {
         SelectionKey key;
 

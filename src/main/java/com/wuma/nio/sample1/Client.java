@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class Client implements Runnable {
-    // ¿ÕÏĞ¼ÆÊıÆ÷,Èç¹û¿ÕÏĞ³¬¹ı10´Î,½«¼ì²âserverÊÇ·ñÖĞ¶ÏÁ¬½Ó.
+    // ç©ºé—²è®¡æ•°å™¨,å¦‚æœç©ºé—²è¶…è¿‡10æ¬¡,å°†æ£€æµ‹serveræ˜¯å¦ä¸­æ–­è¿æ¥.
     private static int idleCounter = 0;
     private Selector selector;
     private SocketChannel socketChannel;
@@ -30,12 +30,12 @@ public class Client implements Runnable {
     }
 
     public Client() throws IOException {
-        // Í¬ÑùµÄ,×¢²áÄÖÖÓ.
+        // åŒæ ·çš„,æ³¨å†Œé—¹é’Ÿ.
         this.selector = Selector.open();
 
-        // Á¬½ÓÔ¶³Ìserver
+        // è¿æ¥è¿œç¨‹server
         socketChannel = SocketChannel.open();
-        // Èç¹û¿ìËÙµÄ½¨Á¢ÁËÁ¬½Ó,·µ»Øtrue.Èç¹ûÃ»ÓĞ½¨Á¢,Ôò·µ»Øfalse,²¢ÔÚÁ¬½Óºó³ö·¢ConnectÊÂ¼ş.
+        // å¦‚æœå¿«é€Ÿçš„å»ºç«‹äº†è¿æ¥,è¿”å›true.å¦‚æœæ²¡æœ‰å»ºç«‹,åˆ™è¿”å›false,å¹¶åœ¨è¿æ¥åå‡ºå‘Connectäº‹ä»¶.
         Boolean isConnected = socketChannel.connect(new InetSocketAddress("192.168.1.103", 3562));
         socketChannel.configureBlocking(false);
         SelectionKey key = socketChannel.register(selector, SelectionKey.OP_READ);
@@ -44,7 +44,7 @@ public class Client implements Runnable {
             System.out.println("connnected .client send first msg.");
             this.sendFirstMsg();
         } else {
-            // Èç¹ûÁ¬½Ó»¹ÔÚ³¢ÊÔÖĞ,Ôò×¢²áconnectÊÂ¼şµÄ¼àÌı. connect³É¹¦ÒÔºó»á³ö·¢connectÊÂ¼ş.
+            // å¦‚æœè¿æ¥è¿˜åœ¨å°è¯•ä¸­,åˆ™æ³¨å†Œconnectäº‹ä»¶çš„ç›‘å¬. connectæˆåŠŸä»¥åä¼šå‡ºå‘connectäº‹ä»¶.
             key.interestOps(SelectionKey.OP_CONNECT);
         }
     }
@@ -58,13 +58,13 @@ public class Client implements Runnable {
     public void run() {
         while (true) {
             try {
-                // ×èÈû,µÈ´ıÊÂ¼ş·¢Éú,»òÕß1Ãë³¬Ê±. numÎª·¢ÉúÊÂ¼şµÄÊıÁ¿.
+                // é˜»å¡,ç­‰å¾…äº‹ä»¶å‘ç”Ÿ,æˆ–è€…1ç§’è¶…æ—¶. numä¸ºå‘ç”Ÿäº‹ä»¶çš„æ•°é‡.
                 int num = this.selector.select(1000);
                 if (num == 0) {
                     System.out.println("Client selector.select(1000) is 0 ,idleCounter++");
                     idleCounter++;
                     if (idleCounter > 10) {
-                        // Èç¹ûserver¶Ï¿ªÁËÁ¬½Ó,·¢ËÍÏûÏ¢½«Ê§°Ü.
+                        // å¦‚æœserveræ–­å¼€äº†è¿æ¥,å‘é€æ¶ˆæ¯å°†å¤±è´¥.
                         try {
                             System.out.println("idelCounter >10 send msg ");
                             this.sendFirstMsg();
@@ -101,7 +101,7 @@ public class Client implements Runnable {
                             sc.close();
                             continue;
                         }
-                        // ÇĞ»»bufferµ½¶Á×´Ì¬,ÄÚ²¿Ö¸Õë¹éÎ».
+                        // åˆ‡æ¢bufferåˆ°è¯»çŠ¶æ€,å†…éƒ¨æŒ‡é’ˆå½’ä½.
                         temp.flip();
                         String msg = Charset.forName("UTF-8").decode(temp).toString();
                         System.out.println("Client received [" + msg + "] from server address:" /**+ sc.getRemoteAddress()**/);
@@ -110,7 +110,7 @@ public class Client implements Runnable {
                         // echo back.
                         sc.write(ByteBuffer.wrap(msg.getBytes(Charset.forName("UTF-8"))));
 
-                        // Çå¿Õbuffer
+                        // æ¸…ç©ºbuffer
                         temp.clear();
                     }
                 }
