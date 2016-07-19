@@ -17,6 +17,7 @@ public class FileServerTransHandler extends ChannelInboundHandlerAdapter {
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        System.out.println("FileServer channelRead");
         System.out.println("Server received:" + msg);
     }
 

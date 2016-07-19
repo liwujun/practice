@@ -20,7 +20,9 @@ public class FileClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf byteBuf) throws Exception {
-        System.out.println("Client received:" + ByteBufUtil.hexDump(byteBuf.readBytes(byteBuf.readableBytes())));
+        System.out.println("FileClient channelRead0" + byteBuf);
+        System.out.println("Client received:" + ByteBufUtil.hexDump(
+                byteBuf.readBytes(byteBuf.readableBytes())));
     }
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
