@@ -14,6 +14,7 @@ public class FileServerTransHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("FileServer received a con");
         ctx.write(Unpooled.copiedBuffer("HELO,I'm Server", CharsetUtil.UTF_8));
+        System.out.println("FileServer write complete");
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
