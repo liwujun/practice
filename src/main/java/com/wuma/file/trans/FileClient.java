@@ -18,7 +18,7 @@ public class FileClient {
 
     static final boolean SSL = System.getProperty("ssl") != null;
     static final int PORT = Integer.parseInt("8023");
-    static final String host = "139.129.57.197";
+    static final String host = System.getProperty("host") ;
 
     public static void main(String[] args) throws Exception {
         EventLoopGroup group = new NioEventLoopGroup();

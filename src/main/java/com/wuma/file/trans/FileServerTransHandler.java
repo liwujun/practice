@@ -1,25 +1,22 @@
 package com.wuma.file.trans;
 
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.*;
 import io.netty.util.CharsetUtil;
+import io.netty.util.ReferenceCountUtil;
 
 /**
  * Created by liwujun
  * on 2016/7/19 at 15:36
  */
 public class FileServerTransHandler extends ChannelInboundHandlerAdapter {
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("FileServer received a con");
-        ctx.write(Unpooled.copiedBuffer("HELO,I'm Server", CharsetUtil.UTF_8));
-        System.out.println("FileServer write complete");
-    }
+
+
+
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        System.out.println("FileServer channelRead");
         System.out.println("Server received:" + msg);
+        ctx.write(msg);
     }
 
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {

@@ -13,10 +13,10 @@ import java.util.concurrent.Future;
  * on 2016/2/14 at 16:45
  */
 public class AsyncController {
-    //çº¿ç¨‹æ± 
+    //Ïß³Ì³Ø
     private ExecutorService executorService;
 
-    //ä¿å­˜å¼‚æ­¥è®¡ç®—çš„Future
+    //±£´æÒì²½¼ÆËãµÄFuture
     private FutureContext<String> context;
 
     public AsyncController() {
@@ -25,11 +25,11 @@ public class AsyncController {
     }
 
     public static void main(String[] args) {
-        //å¯åŠ¨å¼‚æ­¥è®¡ç®—
+        //Æô¶¯Òì²½¼ÆËã
         AsyncController controller = new AsyncController();
         controller.startAsyncCompution();
 
-        //å¯åŠ¨å¼‚æ­¥è®¡ç®—ç»“æœè¾“å‡ºçº¿ç¨‹ï¼Œè¯¥çº¿ç¨‹æ‰«æå¼‚æ­¥è®¡ç®—Futrueçš„çŠ¶æ€ï¼Œå¦‚æœå·²ç»å®Œæˆï¼Œåˆ™è¾“å‡ºå¼‚æ­¥è®¡ç®—ç»“æœ
+        //Æô¶¯Òì²½¼ÆËã½á¹ûÊä³öÏß³Ì£¬¸ÃÏß³ÌÉ¨ÃèÒì²½¼ÆËãFutrueµÄ×´Ì¬£¬Èç¹ûÒÑ¾­Íê³É£¬ÔòÊä³öÒì²½¼ÆËã½á¹û
         OutputResult output = new OutputResult();
         output.setFutureContext(controller.getFutureContext());
         Thread resultThread = new Thread(output);
@@ -42,7 +42,7 @@ public class AsyncController {
 
     public void startAsyncCompution() {
         /**
-         * å¼€å¯100ä¸ªå¼‚æ­¥è®¡ç®—ï¼Œæ¯ä¸ªå¼‚æ­¥è®¡ç®—çº¿ç¨‹éšæœºsleepå‡ ç§’æ¥æ¨¡æ‹Ÿè®¡ç®—è€—æ—¶ã€‚
+         * ¿ªÆô100¸öÒì²½¼ÆËã£¬Ã¿¸öÒì²½¼ÆËãÏß³ÌËæ»úsleep¼¸ÃëÀ´Ä£Äâ¼ÆËãºÄÊ±¡£
          */
         final Random random = new Random();
         for (int i = 0; i < 100; i++) {
@@ -55,7 +55,7 @@ public class AsyncController {
                             return "" + randomInt;
                         }
                     });
-            //æ¯ä¸ªå¼‚æ­¥è®¡ç®—çš„ç»“æœå­˜æ”¾åœ¨contextä¸­
+            //Ã¿¸öÒì²½¼ÆËãµÄ½á¹û´æ·ÅÔÚcontextÖĞ
             this.context.addFuture(future);
         }
     }

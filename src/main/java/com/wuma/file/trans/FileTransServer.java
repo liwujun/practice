@@ -1,13 +1,12 @@
 package com.wuma.file.trans;
 
+import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
@@ -19,23 +18,22 @@ public class FileTransServer {
     static final int PORT = Integer.parseInt("8023");
 
     public static void main(String[] args) throws Exception {
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+//        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.INFO))
-                    .option(ChannelOption.SO_BACKLOG, 100)
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
+            b.group(workerGroup).channel(NioServerSocketChannel.class)
+//                    .handler(new LoggingHandler(LogLevel.INFO))
+//                    .option(ChannelOption.SO_BACKLOG, 100)
+                    .childHandler(new ChannelInitializer<Channel>() {
                         @Override
-                        protected void initChannel(SocketChannel ch) throws Exception {
+                        protected void initChannel(Channel ch) throws Exception {
                             ch.pipeline().addLast(new FileServerTransHandler());
                         }
                     });
             ChannelFuture f = b.bind(PORT).sync();
             f.channel().closeFuture().sync();
         } finally {
-            bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
     }

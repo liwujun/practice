@@ -19,34 +19,34 @@ public class NettyNioServer {
     public void server(int port) throws Exception {
         final ByteBuf buf = Unpooled
                 .unreleasableBuffer(Unpooled.copiedBuffer("Hi!\r\n", CharsetUtil.UTF_8));
-        //äº‹ä»¶å¾ªç¯ç»„
+        //ÊÂ¼şÑ­»·×é
         EventLoopGroup group = new NioEventLoopGroup();
         try {
-            //ç”¨æ¥å¼•å¯¼æœåŠ¡å™¨é…ç½®
+            //ÓÃÀ´Òıµ¼·şÎñÆ÷ÅäÖÃ
             ServerBootstrap b = new ServerBootstrap();
-            //ä½¿ç”¨NIOå¼‚æ­¥æ¨¡å¼ ????
+            //Ê¹ÓÃNIOÒì²½Ä£Ê½ ????
             b.group(group).channel(NioServerSocketChannel.class)
                     .localAddress(new InetSocketAddress(port))
-                    //æŒ‡å®šChannelInitializeråˆå§‹åŒ–handlers
+                    //Ö¸¶¨ChannelInitializer³õÊ¼»¯handlers
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            //æ·»åŠ ä¸€ä¸ªâ€œå…¥ç«™â€handleråˆ°ChannelPipeline
+                            //Ìí¼ÓÒ»¸ö¡°ÈëÕ¾¡±handlerµ½ChannelPipeline
                             ch.pipeline().addLast(new ChannelInboundHandlerAdapter() {
                                 @Override
                                 public void channelActive(ChannelHandlerContext ctx) throws Exception {
-                                    //è¿æ¥åï¼Œå†™æ¶ˆæ¯åˆ°å®¢æˆ·ç«¯ï¼Œå†™å®Œåä¾¿å…³é—­è¿æ¥
+                                    //Á¬½Óºó£¬Ğ´ÏûÏ¢µ½¿Í»§¶Ë£¬Ğ´Íêºó±ã¹Ø±ÕÁ¬½Ó
                                     ctx.writeAndFlush(buf.duplicate())
                                             .addListener(ChannelFutureListener.CLOSE);
                                 }
                             });
                         }
                     });
-            //ç»‘å®šæœåŠ¡å™¨æ¥å—è¿æ¥
+            //°ó¶¨·şÎñÆ÷½ÓÊÜÁ¬½Ó
             ChannelFuture f = b.bind().sync();
             f.channel().closeFuture().sync();
         } catch (Exception e) {
-            //é‡Šæ”¾æ‰€æœ‰èµ„æº??
+            //ÊÍ·ÅËùÓĞ×ÊÔ´??
             group.shutdownGracefully();
         }
     }
