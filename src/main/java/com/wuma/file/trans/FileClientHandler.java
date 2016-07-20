@@ -6,6 +6,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
+import io.netty.util.ReferenceCountUtil;
 
 import java.nio.charset.Charset;
 
@@ -24,9 +25,22 @@ public class FileClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
-        System.out.println("FileClient channelRead0" + msg);
-        System.out.println("Client received:" + ByteBufUtil.hexDump(
+        System.out.println("FileClient channelRead0: " + msg);
+        System.out.println("Client received: " + ByteBufUtil.hexDump(
                 msg.readBytes(msg.readableBytes())));
+        try {
+            while (msg.isReadable()) { // (1)
+                System.out.print((char) msg.readByte());
+                System.out.flush();
+            }
+        } finally {
+//            ReferenceCountUtil.release(msg); // (2)
+        }
+//        ctx.write(msg);
+    }
+
+    public void channelReadComplete(ChannelHandlerContext ctx) {
+        ctx.flush();
     }
 
 
