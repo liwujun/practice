@@ -1,4 +1,4 @@
-package com.wuma.ds;
+package com.wuma.diaosi;
 
 import com.wuma.bean.User;
 
