@@ -8,7 +8,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/7/19 at 15:24
  */
 public class FileTransServer {

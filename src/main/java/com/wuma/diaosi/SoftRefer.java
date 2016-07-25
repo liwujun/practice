@@ -6,7 +6,7 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/1/4 at 14:06
  */
 public class SoftRefer {

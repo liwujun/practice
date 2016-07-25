@@ -1,7 +1,7 @@
 package com.wuma.diaosi;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/7/25 at 15:22
  */
 public class TopK {

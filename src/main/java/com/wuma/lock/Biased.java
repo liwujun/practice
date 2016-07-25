@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/1/4 at 17:08
  */
 public class Biased {

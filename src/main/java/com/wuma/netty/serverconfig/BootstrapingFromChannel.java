@@ -11,7 +11,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.net.InetSocketAddress;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/2/18 at 16:08
  * 从客户端引导
  */

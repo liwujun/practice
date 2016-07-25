@@ -1,7 +1,7 @@
 package com.wuma.Visibility;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/1/21 at 15:25
  */
 public class VolatileTest {

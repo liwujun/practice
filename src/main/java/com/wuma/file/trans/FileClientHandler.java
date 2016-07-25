@@ -11,7 +11,7 @@ import io.netty.util.ReferenceCountUtil;
 import java.nio.charset.Charset;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/7/19 at 15:20
  */
 public class FileClientHandler extends SimpleChannelInboundHandler<ByteBuf> {

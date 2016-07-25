@@ -3,7 +3,7 @@ package com.wuma.netty.memcached;
 import java.util.Random;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/2/18 at 17:07
  */
 public class MemcachedRequest {

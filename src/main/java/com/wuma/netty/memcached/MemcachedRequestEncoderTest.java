@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/2/18 at 17:25
  */
 public class MemcachedRequestEncoderTest {

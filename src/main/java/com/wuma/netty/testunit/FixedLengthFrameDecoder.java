@@ -7,7 +7,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/2/18 at 16:38
  */
 public class FixedLengthFrameDecoder extends ByteToMessageDecoder {

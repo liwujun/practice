@@ -7,7 +7,7 @@ import io.netty.util.CharsetUtil;
 import io.netty.util.ReferenceCountUtil;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/7/19 at 15:36
  */
 public class FileServerTransHandler extends ChannelInboundHandlerAdapter {

@@ -11,7 +11,7 @@ import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/2/18 at 16:23
  */
 public class InitChannelExample {

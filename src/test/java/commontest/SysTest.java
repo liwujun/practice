@@ -1,7 +1,7 @@
 package commontest;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/5/25 at 14:32
  */
 public class SysTest {

@@ -8,7 +8,7 @@ import io.netty.handler.codec.http.websocketx.*;
 import java.util.List;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/2/18 at 14:56
  */
 public class WebSocketConvertHandler

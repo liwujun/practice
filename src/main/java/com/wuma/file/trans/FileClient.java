@@ -11,7 +11,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.net.InetSocketAddress;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/7/19 at 15:10
  */
 public class FileClient {

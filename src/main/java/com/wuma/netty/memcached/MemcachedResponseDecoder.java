@@ -8,7 +8,7 @@ import io.netty.util.CharsetUtil;
 import java.util.List;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/2/18 at 17:18
  */
 public class MemcachedResponseDecoder extends ByteToMessageDecoder {

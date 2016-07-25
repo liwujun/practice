@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/2/14 at 16:45
  */
 public class AsyncController {

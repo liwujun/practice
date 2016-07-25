@@ -6,7 +6,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import io.netty.util.CharsetUtil;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/2/18 at 17:11
  */
 public class MemcachedRequestEncoder extends MessageToByteEncoder<MemcachedRequest> {

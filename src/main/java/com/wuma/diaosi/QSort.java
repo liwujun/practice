@@ -6,7 +6,7 @@ import sun.misc.Sort;
 import java.util.Stack;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/7/25 at 11:12
  */
 public class QSort {

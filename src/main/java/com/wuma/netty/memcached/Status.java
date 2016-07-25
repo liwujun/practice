@@ -1,7 +1,7 @@
 package com.wuma.netty.memcached;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/2/18 at 17:06
  */
 public class Status {
