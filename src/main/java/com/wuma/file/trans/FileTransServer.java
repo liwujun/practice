@@ -12,7 +12,7 @@ import io.netty.handler.logging.LoggingHandler;
  * on 2016/7/19 at 15:24
  */
 public class FileTransServer {
-    static final int PORT = Integer.parseInt("8023");
+    static final int PORT = Integer.parseInt("8080");
 
     public static void main(String[] args) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);

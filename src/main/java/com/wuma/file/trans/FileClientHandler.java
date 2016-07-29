@@ -18,9 +18,9 @@ public class FileClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("FileClient conn a server");
-        ctx.write(Unpooled.copiedBuffer("HELO,I'm a client", CharsetUtil.UTF_8));
-        System.out.println("FileClient write complete");
-        ctx.flush();
+//        ctx.write(Unpooled.copiedBuffer("HELO,I'm a client", CharsetUtil.UTF_8));
+//        System.out.println("FileClient write complete");
+//        ctx.flush();
     }
 
     @Override
