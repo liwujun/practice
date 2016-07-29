@@ -13,6 +13,7 @@ import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
 import io.netty.handler.codec.http.multipart.HttpDataFactory;
 import io.netty.handler.codec.http.multipart.HttpPostRequestEncoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
+import io.netty.handler.stream.ChunkedWriteHandler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,18 +40,27 @@ public class FileClient {
             File file = new File(FILE);
             if (!file.canRead()) {
                 throw new FileNotFoundException(FILE);
+            } else {
+                System.out.println("file can be read.");
             }
             b.group(group).channel(NioSocketChannel.class).remoteAddress(
                     new InetSocketAddress(host, PORT)
             ).handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
+                    ch.pipeline().addLast("codec", new HttpClientCodec());
+
+                    // Remove the following line if you don't want automatic content decompression.
+                    ch.pipeline().addLast("inflater", new HttpContentDecompressor());
+
+                    // to be used since huge file transfer
+                    ch.pipeline().addLast("chunkedWriter", new ChunkedWriteHandler());
                     ch.pipeline().addLast(new FileClientHandler());
                 }
             });
 
             //set headers
-            HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE);
+            HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MAXSIZE);
 
             ChannelFuture f = b.connect().sync();
             Channel channel = f.channel();
@@ -83,6 +93,9 @@ public class FileClient {
             bodyRequestEncoder.finalizeRequest();
             channel.write(request);
             System.out.println("write a request");
+            if (bodyRequestEncoder.isChunked()) {
+                channel.write(bodyRequestEncoder);
+            }
             channel.flush();
             System.out.println("flush a request");
 

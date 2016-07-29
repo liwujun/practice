@@ -4,6 +4,9 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpContentCompressor;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
@@ -25,7 +28,14 @@ public class FileTransServer {
                     .childHandler(new ChannelInitializer<Channel>() {
                         @Override
                         protected void initChannel(Channel ch) throws Exception {
+                            ch.pipeline().addLast(new HttpRequestDecoder());
+                            ch.pipeline().addLast(new HttpResponseEncoder());
+
+                            // Remove the following line if you don't want automatic content compression.
+                            ch.pipeline().addLast(new HttpContentCompressor());
+
                             ch.pipeline().addLast(new FileServerTransHandler());
+
                         }
                     });
             ChannelFuture f = b.bind(PORT).sync();
