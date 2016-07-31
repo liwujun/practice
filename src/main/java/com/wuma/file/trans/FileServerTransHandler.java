@@ -10,6 +10,7 @@ import io.netty.util.ReferenceCountUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 
 /**
  * Created by wuma
@@ -17,24 +18,41 @@ import java.io.IOException;
  */
 public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObject> {
 
+    private HttpRequest request;
+
+    private boolean readingChunks;
+
+    private HttpData partialContent;
+
+    private final StringBuilder responseContent = new StringBuilder();
+
     private static final HttpDataFactory factory =
             new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE); // Disk if size exceed
+
     private HttpPostRequestDecoder decoder;
-    private final StringBuilder responseContent = new StringBuilder();
-    private HttpRequest request;
-    private boolean readingChunks;
-    //这个值用作装大块内容的
-    private HttpData partialContent;
+
     private File dest;
 
+    static {
+        DiskFileUpload.deleteOnExitTemporaryFile = true; // should delete file
+        // on exit (in normal
+        // exit)
+        DiskFileUpload.baseDirectory = null; // system temp directory
+        DiskAttribute.deleteOnExitTemporaryFile = true; // should delete file on
+        // exit (in normal exit)
+        DiskAttribute.baseDirectory = null; // system temp directory
+    }
 
     public void channelActive(ChannelHandlerContext ctx) {
         System.out.println("a conn from client active.");
-        dest=new File("d:\\x.pdf");
+        dest=new File(FileTransServer.destf);
     }
 
     public void channelInactive(ChannelHandlerContext ctx) {
         System.out.println("a conn from client is inactive.");
+        if (decoder != null) {
+            decoder.cleanFiles();
+        }
     }
 
     @Override
@@ -43,14 +61,42 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
         if (msg instanceof HttpRequest) {
             System.out.println("receive a HttpRequest ");
             HttpRequest request = this.request = (HttpRequest) msg;
-            decoder = new HttpPostRequestDecoder(factory, request);
+
+            URI uri = new URI(request.uri());
+            if (!uri.getPath().startsWith("/form")) {
+                // Write Menu
+//                writeMenu(ctx);
+                return;
+            }
+
+            // if GET Method: should not try to create a HttpPostRequestDecoder
+            if (request.method().equals(HttpMethod.GET)) {
+                // GET Method: should not try to create a HttpPostRequestDecoder
+                // So stop here
+                responseContent.append("\r\n\r\nEND OF GET CONTENT\r\n");
+                // Not now: LastHttpContent will be sent writeResponse(ctx.channel());
+                return;
+            }
+
+            try {
+                decoder = new HttpPostRequestDecoder(factory, request);
+                System.out.println("is multi? " + decoder.isMultipart());
+            }catch (HttpPostRequestDecoder.ErrorDataDecoderException e){
+                e.printStackTrace();
+                responseContent.append(e.getMessage());
+
+                ctx.channel().close();
+                return;
+            }
+            readingChunks = HttpUtil.isTransferEncodingChunked(request);
+            System.out.println("readingChunks:" + readingChunks);
 
         } else {
             System.out.println("Receive a msg not a HttpRequest");
         }
 
-        readingChunks = HttpUtil.isTransferEncodingChunked(request);
-
+        // check if the decoder was constructed before
+        // if not it handles the form get
         if (decoder != null) {
             if (msg instanceof HttpContent) {
                 System.out.println("Server received a httpContent");
@@ -58,6 +104,7 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
                 HttpContent chunk = (HttpContent) msg;
                 try {
                     decoder.offer(chunk);
+//                    System.out.println("--decode has Next:"+decoder.hasNext());
                 } catch (HttpPostRequestDecoder.ErrorDataDecoderException e1) {
                     e1.printStackTrace();
                     responseContent.append(e1.getMessage());
@@ -78,7 +125,6 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
                 System.out.println("Server received not a httpcontent");
             }
         }
-        System.out.println("readingChunks:" + readingChunks);
         System.out.println("Server received:" + msg);
 
     }

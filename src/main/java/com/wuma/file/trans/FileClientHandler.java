@@ -16,33 +16,11 @@ import java.nio.charset.Charset;
  */
 public class FileClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("FileClient conn a server");
-//        ctx.write(Unpooled.copiedBuffer("HELO,I'm a client", CharsetUtil.UTF_8));
-//        System.out.println("FileClient write complete");
-//        ctx.flush();
-    }
-
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         System.out.println("FileClient channelRead0: " + msg);
-        System.out.println("Client received: " + ByteBufUtil.hexDump(
-                msg.readBytes(msg.readableBytes())));
-        try {
-            while (msg.isReadable()) { // (1)
-                System.out.print((char) msg.readByte());
-                System.out.flush();
-            }
-        } finally {
-//            ReferenceCountUtil.release(msg); // (2)
-        }
-//        ctx.write(msg);
-    }
 
-    public void channelReadComplete(ChannelHandlerContext ctx) {
-        ctx.flush();
     }
-
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();

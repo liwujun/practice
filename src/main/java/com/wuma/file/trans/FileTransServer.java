@@ -16,6 +16,7 @@ import io.netty.handler.logging.LoggingHandler;
  */
 public class FileTransServer {
     static final int PORT = Integer.parseInt("8080");
+    static final String destf=System.getProperty("file","/Users/liwujun/Downloads/x.pdf");
 
     public static void main(String[] args) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
