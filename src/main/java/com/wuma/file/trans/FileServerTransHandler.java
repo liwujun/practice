@@ -4,6 +4,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.Cookie;
+import io.netty.handler.codec.http.ServerCookieEncoder;
+import io.netty.handler.codec.http.cookie.*;
 import io.netty.handler.codec.http.multipart.*;
 import io.netty.util.CharsetUtil;
 import io.netty.util.ReferenceCountUtil;
@@ -11,12 +14,20 @@ import io.netty.util.ReferenceCountUtil;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
+
+import static io.netty.buffer.Unpooled.copiedBuffer;
 
 /**
  * Created by wuma
  * on 2016/7/19 at 15:36
  */
 public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObject> {
+    private static final Logger logger = Logger.getLogger(FileServerTransHandler.class.getName());
 
     private HttpRequest request;
 
@@ -44,12 +55,12 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
     }
 
     public void channelActive(ChannelHandlerContext ctx) {
-        System.out.println("a conn from client active.");
-        dest=new File(FileTransServer.destf);
+        logger.info("a conn from client active.");
+        dest = new File(FileTransServer.destf);
     }
 
     public void channelInactive(ChannelHandlerContext ctx) {
-        System.out.println("a conn from client is inactive.");
+        logger.info("a conn from client is inactive.");
         if (decoder != null) {
             decoder.cleanFiles();
         }
@@ -57,86 +68,96 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
-        System.out.println("Server begin to read");
+        logger.info("Server begin to read");
         if (msg instanceof HttpRequest) {
-            System.out.println("receive a HttpRequest ");
+            logger.info("receive a HttpRequest ");
             HttpRequest request = this.request = (HttpRequest) msg;
 
             URI uri = new URI(request.uri());
             if (!uri.getPath().startsWith("/form")) {
                 // Write Menu
-//                writeMenu(ctx);
-                return;
-            }
-
-            // if GET Method: should not try to create a HttpPostRequestDecoder
-            if (request.method().equals(HttpMethod.GET)) {
-                // GET Method: should not try to create a HttpPostRequestDecoder
-                // So stop here
-                responseContent.append("\r\n\r\nEND OF GET CONTENT\r\n");
-                // Not now: LastHttpContent will be sent writeResponse(ctx.channel());
+                writeMenu(ctx);
                 return;
             }
 
             try {
                 decoder = new HttpPostRequestDecoder(factory, request);
-                System.out.println("is multi? " + decoder.isMultipart());
-            }catch (HttpPostRequestDecoder.ErrorDataDecoderException e){
+                logger.info("is multi? " + decoder.isMultipart());
+            } catch (HttpPostRequestDecoder.ErrorDataDecoderException e) {
                 e.printStackTrace();
                 responseContent.append(e.getMessage());
-
+                writeResponse(ctx.channel());
                 ctx.channel().close();
+                logger.info("error retur");
                 return;
             }
             readingChunks = HttpUtil.isTransferEncodingChunked(request);
-            System.out.println("readingChunks:" + readingChunks);
-
+            logger.info("readingChunks:" + readingChunks);
+            responseContent.append("Is Chunked: " + readingChunks + "\r\n");
+            responseContent.append("IsMultipart: " + decoder.isMultipart() + "\r\n");
+            if (readingChunks) {
+                // Chunk version
+                responseContent.append("Chunks: ");
+                readingChunks = true;
+            }
         } else {
-            System.out.println("Receive a msg not a HttpRequest");
+            logger.info("Receive a msg not a HttpRequest");
         }
 
         // check if the decoder was constructed before
         // if not it handles the form get
         if (decoder != null) {
             if (msg instanceof HttpContent) {
-                System.out.println("Server received a httpContent");
+                logger.info("Server received a httpContent");
                 //server收到了大块内容
                 HttpContent chunk = (HttpContent) msg;
                 try {
                     decoder.offer(chunk);
-//                    System.out.println("--decode has Next:"+decoder.hasNext());
                 } catch (HttpPostRequestDecoder.ErrorDataDecoderException e1) {
                     e1.printStackTrace();
                     responseContent.append(e1.getMessage());
+                    writeResponse(ctx.channel());
                     ctx.channel().close();
+                    logger.info("error return");
                     return;
                 }
+                responseContent.append('o');
                 // example of reading chunk by chunk (minimize memory usage due to
                 // Factory)
                 readHttpDataChunkByChunk();
 
                 if (chunk instanceof LastHttpContent) {
-//                    writeResponse(ctx.channel());
+                    //这个地方保证，处理短连接，而不是keep-alive似的长连接
+                    writeResponse(ctx.channel());
                     readingChunks = false;
 
                     reset();
                 }
             } else {
-                System.out.println("Server received not a httpcontent");
+                logger.info("Server received not a httpcontent");
             }
+        } else {
+            writeResponse(ctx.channel());
         }
-        System.out.println("Server received:" + msg);
 
+    }
+
+    private void reset() {
+        request = null;
+
+        // destroy the decoder to release all resources
+        decoder.destroy();
+        decoder = null;
     }
 
     /**
      * Example of reading request by chunk and getting values from chunk to chunk
      */
     private void readHttpDataChunkByChunk() throws IOException {
-        System.out.println("readHttpDataChunkByChunk......");
+        logger.info("readHttpDataChunkByChunk......");
         try {
             while (decoder.hasNext()) {
-                System.out.println("decoder hasNext()...");
+                logger.info("decoder hasNext()...");
                 InterfaceHttpData data = decoder.next();
                 if (data != null) {
                     // check if current HttpData is a FileUpload and previously set as partial
@@ -152,11 +173,9 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
                     }
                 }
             }
-            System.out.println("decoder has no next()...");
             // Check partial decoding for a FileUpload
             InterfaceHttpData data = decoder.currentPartialHttpData();
             if (data != null) {
-                System.out.println("decoder is not null....");
                 StringBuilder builder = new StringBuilder();
                 if (partialContent == null) {
                     partialContent = (HttpData) data;
@@ -171,27 +190,25 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
                     builder.append("(DefinedSize: ").append(partialContent.definedLength()).append(")");
                 }
                 if (partialContent.definedLength() > 0) {
-                    builder.append(" ").append(partialContent.length() * 100 / partialContent.definedLength())
+                    builder.append("  ").append(partialContent.length() * 100 / partialContent.definedLength())
                             .append("% ");
-                    System.out.println(builder.toString());
+                    logger.info(builder.toString());
                 } else {
                     builder.append(" ").append(partialContent.length()).append(" ");
-                    System.out.println(builder.toString());
+                    logger.info(builder.toString());
                 }
-            }else {
-                System.out.println("decoder's current PartialHttpData is null");
+            } else {
+                logger.info("decoder's current PartialHttpData is null");
             }
         } catch (HttpPostRequestDecoder.EndOfDataDecoderException e1) {
             // end
-            System.out.println("EndOFDataDecoderException");
+            logger.info("EndOFDataDecoderException");
             responseContent.append("\r\n\r\nEND OF CONTENT CHUNK BY CHUNK\r\n\r\n");
         }
     }
 
     private void writeHttpData(InterfaceHttpData data) throws IOException {
-        System.out.println("writeHttpData");
         if (data.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute) {
-            System.out.println("data.getHttpDataType()=InterfaceHttpData.HttpDataType.Attribute");
             Attribute attribute = (Attribute) data;
             String value;
             try {
@@ -211,7 +228,6 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
                         + attribute + "\r\n");
             }
         } else {
-            System.out.println("data.getHttpDataType!=....");
             responseContent.append("\r\nBODY FileUpload: " + data.getHttpDataType().name() + ": " + data
                     + "\r\n");
             if (data.getHttpDataType() == InterfaceHttpData.HttpDataType.FileUpload) {
@@ -229,10 +245,10 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
                     } else {
                         responseContent.append("\tFile  too long to be printed out:" + fileUpload.length() + "\r\n");
                     }
-                     fileUpload.isInMemory();// tells if the file is in Memory
+                    fileUpload.isInMemory();// tells if the file is in Memory
                     // or on File
-                    System.out.println("fileUpload.renameTo");
-                     fileUpload.renameTo(dest); // enable to move into another
+                    logger.info("fileUpload.renameTo");
+                    fileUpload.renameTo(dest); // enable to move into another
                     // File dest
                     // decoder.removeFileUploadFromClean(fileUpload); //remove
                     // the File of to delete file
@@ -243,16 +259,131 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
         }
     }
 
-    private void reset() {
-        request = null;
+    private void writeResponse(Channel channel) {
+        // Convert the response content to a ChannelBuffer.
+        ByteBuf buf = copiedBuffer(responseContent.toString(), CharsetUtil.UTF_8);
+        responseContent.setLength(0);
 
-        // destroy the decoder to release all resources
-        decoder.destroy();
-        decoder = null;
+        // Decide whether to close the connection or not.
+        boolean close = request.headers().contains(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE, true)
+                || request.protocolVersion().equals(HttpVersion.HTTP_1_0)
+                && !request.headers().contains(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE, true);
+
+        // Build the response object.
+        FullHttpResponse response = new DefaultFullHttpResponse(
+                HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
+        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
+
+        if (!close) {
+            // There's no need to add 'Content-Length' header
+            // if this is the last response.
+            response.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, buf.readableBytes());
+        }
+
+        Set<io.netty.handler.codec.http.cookie.Cookie> cookies;
+        String value = request.headers().get(HttpHeaderNames.COOKIE);
+        if (value == null) {
+            cookies = Collections.emptySet();
+        } else {
+            cookies = ServerCookieDecoder.STRICT.decode(value);
+        }
+        if (!cookies.isEmpty()) {
+            // Reset the cookies if necessary.
+            for (io.netty.handler.codec.http.cookie.Cookie cookie : cookies) {
+                response.headers().add(HttpHeaderNames.SET_COOKIE, io.netty.handler.codec.http.cookie.ServerCookieEncoder.STRICT.encode(cookie));
+            }
+        }
+        // Write the response.
+        ChannelFuture future = channel.writeAndFlush(response);
+        // Close the connection after the write operation is done if necessary.
+        if (close) {
+            future.addListener(ChannelFutureListener.CLOSE);
+        }
     }
 
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
 
+    private void writeMenu(ChannelHandlerContext ctx) {
+        // print several HTML forms
+        // Convert the response content to a ChannelBuffer.
+        responseContent.setLength(0);
+
+        // create Pseudo Menu
+        responseContent.append("<html>");
+        responseContent.append("<head>");
+        responseContent.append("<title>Netty Test Form </title>\r\n");
+        responseContent.append("</head>\r\n");
+        responseContent.append("<body bgcolor=white><style>td{font-size: 12pt;}</style>");
+
+        responseContent.append("<table border=\"0\">");
+        responseContent.append("<tr>");
+        responseContent.append("<td>");
+        responseContent.append("<h1>Netty Test Form</h1>");
+        responseContent.append("Choose one FORM");
+        responseContent.append("</td>");
+        responseContent.append("</tr>");
+        responseContent.append("</table>\r\n");
+
+        // GET
+        responseContent.append("<CENTER>GET FORM<HR WIDTH=\"75%\" NOSHADE color=\"blue\"></CENTER>");
+        responseContent.append("<FORM ACTION=\"/formget\" METHOD=\"GET\">");
+        responseContent.append("<input type=hidden name=getform value=\"GET\">");
+        responseContent.append("<table border=\"0\">");
+        responseContent.append("<tr><td>Fill with value: <br> <input type=text name=\"info\" size=10></td></tr>");
+        responseContent.append("<tr><td>Fill with value: <br> <input type=text name=\"secondinfo\" size=20>");
+        responseContent
+                .append("<tr><td>Fill with value: <br> <textarea name=\"thirdinfo\" cols=40 rows=10></textarea>");
+        responseContent.append("</td></tr>");
+        responseContent.append("<tr><td><INPUT TYPE=\"submit\" NAME=\"Send\" VALUE=\"Send\"></INPUT></td>");
+        responseContent.append("<td><INPUT TYPE=\"reset\" NAME=\"Clear\" VALUE=\"Clear\" ></INPUT></td></tr>");
+        responseContent.append("</table></FORM>\r\n");
+        responseContent.append("<CENTER><HR WIDTH=\"75%\" NOSHADE color=\"blue\"></CENTER>");
+
+        // POST
+        responseContent.append("<CENTER>POST FORM<HR WIDTH=\"75%\" NOSHADE color=\"blue\"></CENTER>");
+        responseContent.append("<FORM ACTION=\"/formpost\" METHOD=\"POST\">");
+        responseContent.append("<input type=hidden name=getform value=\"POST\">");
+        responseContent.append("<table border=\"0\">");
+        responseContent.append("<tr><td>Fill with value: <br> <input type=text name=\"info\" size=10></td></tr>");
+        responseContent.append("<tr><td>Fill with value: <br> <input type=text name=\"secondinfo\" size=20>");
+        responseContent
+                .append("<tr><td>Fill with value: <br> <textarea name=\"thirdinfo\" cols=40 rows=10></textarea>");
+        responseContent.append("<tr><td>Fill with file (only file name will be transmitted): <br> "
+                + "<input type=file name=\"myfile\">");
+        responseContent.append("</td></tr>");
+        responseContent.append("<tr><td><INPUT TYPE=\"submit\" NAME=\"Send\" VALUE=\"Send\"></INPUT></td>");
+        responseContent.append("<td><INPUT TYPE=\"reset\" NAME=\"Clear\" VALUE=\"Clear\" ></INPUT></td></tr>");
+        responseContent.append("</table></FORM>\r\n");
+        responseContent.append("<CENTER><HR WIDTH=\"75%\" NOSHADE color=\"blue\"></CENTER>");
+
+        // POST with enctype="multipart/form-data"
+        responseContent.append("<CENTER>POST MULTIPART FORM<HR WIDTH=\"75%\" NOSHADE color=\"blue\"></CENTER>");
+        responseContent.append("<FORM ACTION=\"/formpostmultipart\" ENCTYPE=\"multipart/form-data\" METHOD=\"POST\">");
+        responseContent.append("<input type=hidden name=getform value=\"POST\">");
+        responseContent.append("<table border=\"0\">");
+        responseContent.append("<tr><td>Fill with value: <br> <input type=text name=\"info\" size=10></td></tr>");
+        responseContent.append("<tr><td>Fill with value: <br> <input type=text name=\"secondinfo\" size=20>");
+        responseContent
+                .append("<tr><td>Fill with value: <br> <textarea name=\"thirdinfo\" cols=40 rows=10></textarea>");
+        responseContent.append("<tr><td>Fill with file: <br> <input type=file name=\"myfile\">");
+        responseContent.append("</td></tr>");
+        responseContent.append("<tr><td><INPUT TYPE=\"submit\" NAME=\"Send\" VALUE=\"Send\"></INPUT></td>");
+        responseContent.append("<td><INPUT TYPE=\"reset\" NAME=\"Clear\" VALUE=\"Clear\" ></INPUT></td></tr>");
+        responseContent.append("</table></FORM>\r\n");
+        responseContent.append("<CENTER><HR WIDTH=\"75%\" NOSHADE color=\"blue\"></CENTER>");
+
+        responseContent.append("</body>");
+        responseContent.append("</html>");
+
+        ByteBuf buf = copiedBuffer(responseContent.toString(), CharsetUtil.UTF_8);
+        // Build the response object.
+        FullHttpResponse response = new DefaultFullHttpResponse(
+                HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
+
+        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html; charset=UTF-8");
+        response.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, buf.readableBytes());
+
+        // Write the response.
+        ctx.channel().writeAndFlush(response);
     }
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
