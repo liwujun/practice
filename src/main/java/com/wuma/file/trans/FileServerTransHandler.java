@@ -182,7 +182,7 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
                     builder.append("(DefinedSize: ").append(partialContent.definedLength()).append(")");
                 }
                 if (partialContent.definedLength() > 0) {
-                    builder.append("  ").append(partialContent.length() * 100 / partialContent.definedLength())
+                    builder.append("  ").append((partialContent.length() * 10000 / partialContent.definedLength())*0.01)
                             .append("% ");
                     logger.info(builder.toString());
                 } else {
