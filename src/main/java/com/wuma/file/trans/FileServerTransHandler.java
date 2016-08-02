@@ -68,9 +68,7 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
-        logger.info("Server begin to read");
         if (msg instanceof HttpRequest) {
-            logger.info("receive a HttpRequest ");
             HttpRequest request = this.request = (HttpRequest) msg;
 
             URI uri = new URI(request.uri());
@@ -92,7 +90,6 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
                 return;
             }
             readingChunks = HttpUtil.isTransferEncodingChunked(request);
-            logger.info("readingChunks:" + readingChunks);
             responseContent.append("Is Chunked: " + readingChunks + "\r\n");
             responseContent.append("IsMultipart: " + decoder.isMultipart() + "\r\n");
             if (readingChunks) {
@@ -101,14 +98,12 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
                 readingChunks = true;
             }
         } else {
-            logger.info("Receive a msg not a HttpRequest");
         }
 
         // check if the decoder was constructed before
         // if not it handles the form get
         if (decoder != null) {
             if (msg instanceof HttpContent) {
-                logger.info("Server received a httpContent");
                 //server收到了大块内容
                 HttpContent chunk = (HttpContent) msg;
                 try {
@@ -134,7 +129,6 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
                     reset();
                 }
             } else {
-                logger.info("Server received not a httpcontent");
             }
         } else {
             writeResponse(ctx.channel());
@@ -195,8 +189,6 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
                     builder.append(" ").append(partialContent.length()).append(" ");
                     logger.info(builder.toString());
                 }
-            } else {
-                logger.info("decoder's current PartialHttpData is null");
             }
         } catch (HttpPostRequestDecoder.EndOfDataDecoderException e1) {
             // end
