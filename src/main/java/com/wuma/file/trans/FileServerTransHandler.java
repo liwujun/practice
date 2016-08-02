@@ -154,10 +154,8 @@ public class FileServerTransHandler extends SimpleChannelInboundHandler<HttpObje
      * Example of reading request by chunk and getting values from chunk to chunk
      */
     private void readHttpDataChunkByChunk() throws IOException {
-        logger.info("readHttpDataChunkByChunk......");
         try {
             while (decoder.hasNext()) {
-                logger.info("decoder hasNext()...");
                 InterfaceHttpData data = decoder.next();
                 if (data != null) {
                     // check if current HttpData is a FileUpload and previously set as partial
