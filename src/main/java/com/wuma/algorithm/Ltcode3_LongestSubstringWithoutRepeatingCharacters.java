@@ -20,16 +20,30 @@ package com.wuma.algorithm;
  */
 public class Ltcode3_LongestSubstringWithoutRepeatingCharacters {
     public int lengthOfLongestSubstring(String s) {
-        int len = s.length();
-        int[][] dp = new int[len][len];
-        for (int i = 0; i < len; i++) {
-            dp[i][i] = 1;
+        if (s == null || s.length() == 0) {
+            return 0;
         }
-        for (int i = 0; i < len; i++) {
-            for (int j = 0; j < len; j++) {
-
+        int len = s.length();
+        int[] dp = new int[len];
+        int maxNoRepeatingLen = 1;
+        int maxindex = 0;
+        int last_start = 0;
+        dp[0] = 1;
+        for (int i = 1; i < len; i++) {
+            for (int j = i - 1; j >= last_start; j--) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    dp[i] = i - j;
+                    last_start = j + 1;
+                    break;
+                } else if (j == last_start) {
+                    dp[i] = dp[i - 1] + 1;
+                }
+            }
+            if (dp[i] > maxNoRepeatingLen) {
+                maxNoRepeatingLen = dp[i];
+                maxindex = i + 1 - maxNoRepeatingLen;
             }
         }
-        return 0;
+        return maxNoRepeatingLen ;
     }
 }
