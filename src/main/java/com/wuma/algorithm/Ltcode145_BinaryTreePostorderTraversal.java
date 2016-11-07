@@ -1,7 +1,9 @@
 package com.wuma.algorithm;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by liwujun
@@ -33,7 +35,39 @@ public class Ltcode145_BinaryTreePostorderTraversal {
             val = x;
         }
     }
+    Stack<TreeNode> s1 = new Stack<TreeNode>();
+    Stack<TreeNode> s2 = new Stack<TreeNode>();
+    public List<Integer> postorderTraversall(TreeNode root) {
+        List<Integer> li = new LinkedList<Integer>();
+        if(root == null){
+            return li;
+        }
+        traverseLeft(root,s1);
 
+        while(!s1.isEmpty()){
+            TreeNode temp=s1.peek();
+            if(!s2.isEmpty() && s1.peek()==s2.peek()){
+                li.add(s1.pop().val);
+                s2.pop();
+                continue;
+            }
+            if(temp.right!=null){
+                s2.push(temp);
+                traverseLeft(temp.right,s1);
+
+            }else
+                li.add(s1.pop().val);
+        }
+        return li;
+
+
+    }
+    public void traverseLeft(TreeNode root, Stack<TreeNode> s){
+        while(root!=null){
+            s.push(root);
+            root=root.left;
+        }
+    }
     public static List<Integer> postorderTraversal(TreeNode root) {
 
         if (root == null) {
