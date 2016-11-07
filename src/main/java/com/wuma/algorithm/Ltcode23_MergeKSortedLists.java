@@ -63,5 +63,8 @@ public class Ltcode23_MergeKSortedLists {
     }
     public static void main(String[] args){
 
+        int size=-10;
+        System.out.println(size>>>1);
+        System.out.println(size>>1);
     }
 }
