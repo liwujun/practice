@@ -24,7 +24,7 @@ public class Ltcode145_BinaryTreePostorderTraversal {
     /**
      * Definition for a binary tree node.
      */
-    public class TreeNode {
+    public static class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
@@ -34,9 +34,14 @@ public class Ltcode145_BinaryTreePostorderTraversal {
         }
     }
 
-    public List<Integer> postorderTraversal(TreeNode root) {
+    public static List<Integer> postorderTraversal(TreeNode root) {
 
         List<Integer> list = new ArrayList<Integer>();
         return list;
+    }
+
+    public static void main(String[] args) {
+        TreeNode treeNode = new TreeNode(1);
+        postorderTraversal(treeNode);
     }
 }
