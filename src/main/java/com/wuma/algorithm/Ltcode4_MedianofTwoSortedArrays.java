@@ -64,7 +64,30 @@ public class Ltcode4_MedianofTwoSortedArrays {
     //o log(m+n)
     public double findMedianSortedArraysLogmaddn(int[] nums1, int[] nums2) {
         double t = 1;
-        return t;
+        int m=nums1.length;
+        int n=nums2.length;
+        int total=m+n;
+        if ((total & 0x1)>0){
+            return find_kth(nums1,1,m,nums2,1,n,total/2+1);
+        }else {
+            return (find_kth(nums1,1,m,nums2,1,n,total/2)+find_kth(
+                    nums1,1,m,nums2,1,n,total/2+1
+            ))/2;
+        }
+    }
+
+    int find_kth(int[] nums1,int m,int m1,int[] nums2,int n,int n1,int k){
+        if (m>n) return find_kth(nums2,n,n1,nums1,m,m1,k);
+        if (m==0) return nums2[k-1];
+        if (k==1) return Math.min(nums1[m],nums2[n]);
+        int a=Math.min(k/2,m),b=k-a;
+        if (nums1[a-1]<nums2[b-1])
+            return find_kth(nums1,a,m-a,nums2,0,n,k-a);
+        else if (nums1[a-1]>nums2[b-1])
+            return find_kth(nums1,0,m,nums2,b,n-b,k-b);
+        else
+            return nums1[a-1];
+
     }
 
     public static void main(String[] args) {
@@ -73,5 +96,9 @@ public class Ltcode4_MedianofTwoSortedArrays {
         Ltcode4_MedianofTwoSortedArrays l = new Ltcode4_MedianofTwoSortedArrays();
         double x = l.findMedianSortedArrays(num1, num2);
         System.out.println(x);
+        System.out.println(10&0x1);
+        System.out.println(11&0x1);
+        System.out.println(-11&0x1);
+        System.out.println(-10&0x1);
     }
 }
