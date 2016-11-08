@@ -82,9 +82,9 @@ public class Ltcode4_MedianofTwoSortedArrays {
         if (k==1) return Math.min(nums1[m],nums2[n]);
         int a=Math.min(k/2,m),b=k-a;
         if (nums1[a-1]<nums2[b-1])
-            return find_kth(nums1,a,m-a,nums2,0,n,k-a);
+            return find_kth(nums1,a,m-a,nums2,1,n,k-a);
         else if (nums1[a-1]>nums2[b-1])
-            return find_kth(nums1,0,m,nums2,b,n-b,k-b);
+            return find_kth(nums1,1,m,nums2,b,n-b,k-b);
         else
             return nums1[a-1];
 
