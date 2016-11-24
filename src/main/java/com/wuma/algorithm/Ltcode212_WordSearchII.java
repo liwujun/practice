@@ -29,7 +29,6 @@ public class Ltcode212_WordSearchII {
         List<String> result = new ArrayList<String>();
         int heigth = board.length;
         int width = board[0].length;
-        System.out.println("width:" + width + " height:" + heigth);
         int len = words.length;
         for (int k = 0; k < len; k++) {
             String word = words[k];
@@ -38,12 +37,12 @@ public class Ltcode212_WordSearchII {
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < heigth; j++) {
                     int level = 0;
-                    boolean[][] isAccess = new boolean[width][heigth];
+                    boolean[][] isAccess = new boolean[heigth][width];
                     if (find(board, word, i, j, level, word_length, isAccess)) {
                         isExist = true;
                     }
                 }
-                if (isExist) {
+                if (isExist && !result.contains(word)) {
                     result.add(word);
                     break;
                 }
@@ -52,20 +51,23 @@ public class Ltcode212_WordSearchII {
         return result;
     }
 
+
     boolean find(char[][] board, String word, int x, int y, int level,
                  int word_length, boolean[][] isAccess) {
-        if (!isAccess[x][y]) {
+        int h = board.length - 1;
+        int w = board[0].length - 1;
+        if (x < 0 || y < 0 || x > w || y > h || isAccess[y][x]) {
             return false;
         }
         if (level + 1 >= word_length) {
-            if (board[x][y] == word.charAt(level))
-                return false;
-            else {
+            if (board[y][x] == word.charAt(level))
                 return true;
+            else {
+                return false;
             }
         } else {
-            isAccess[x][y] = true;
-            if (board[x][y] == word.charAt(level)) {
+            isAccess[y][x] = true;
+            if (board[y][x] == word.charAt(level)) {
                 if (find(board, word, x - 1, y, level + 1, word_length, isAccess)) {
                     return true;
                 } else if (find(board, word, x + 1, y, level + 1, word_length, isAccess)) {
@@ -74,13 +76,14 @@ public class Ltcode212_WordSearchII {
                     return true;
                 } else if (find(board, word, x, y + 1, level + 1, word_length, isAccess)) {
                     return true;
-                }else {
-                    isAccess[x][y] = false;
+                } else {
+                    isAccess[y][x] = false;
 
                     return false;
                 }
 
             } else {
+                isAccess[y][x] = false;
                 return false;
             }
         }
@@ -100,10 +103,14 @@ public class Ltcode212_WordSearchII {
                 {'o', 'a', 'a', 'n'},
                 {'e', 't', 'a', 'e'},
                 {'i', 'h', 'k', 'r'},};
+        char[][] b = new char[][]{{}};
+        char[][] bb = new char[][]{{'a'}, {'a'}};
+        System.out.println("bb's length:" + bb.length);
         String[] words = new String[]{"oath", "pea", "eat", "rain"};
+        String[] wo = new String[]{"aa"};
         Ltcode212_WordSearchII ws = new Ltcode212_WordSearchII();
-        List<String> ll=ws.findWords(board, words);
-        for (int i=0;i<ll.size();i++){
+        List<String> ll = ws.findWords(bb, wo);
+        for (int i = 0; i < ll.size(); i++) {
             System.out.println(ll.get(i));
         }
         boolean[][] test = new boolean[3][3];
