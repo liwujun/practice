@@ -1,5 +1,6 @@
 package com.wuma.algorithm;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -16,18 +17,35 @@ import java.util.Set;
 public class Ltcode139_WordBreak {
     public boolean wordBreak(String s, Set<String> wordDict) {
         int len = s.length();
-        int begin = 0;
-        for (int i = 0; i < len; i++) {
-            String s1 = s.substring(begin, i + 1);
-            if (wordDict.contains(s1)) {
-                begin = i ;
+        boolean[] word = new boolean[len + 1];
+        word[0] = true;
+        for (int i = 1; i <= len; i++) {
+            String subs = s.substring(0, i);
+            if (wordDict.contains(subs)) {
+                word[i] = true;
+            }
+            for (int j = len; j >= i; j--) {
+                String sub = s.substring(i - 1, j);
+                if (wordDict.contains(sub) && word[i - 1]) {
+                    word[j] = true;
+                }
             }
         }
-        return true;
+        return word[len];
     }
 
     public static void main(String[] args) {
         String s = "iamastrongBoy";
         System.out.println(s.substring(1, 3));
+        Set<String> wordDict = new HashSet<String>();
+//        wordDict.add("leet");
+//        wordDict.add("code");
+        String ss = "leetcode";
+        ss = "ab";
+        wordDict.add("a");
+        wordDict.add("b");
+        Ltcode139_WordBreak wb = new Ltcode139_WordBreak();
+
+        System.out.println(wb.wordBreak(ss, wordDict));
     }
 }
