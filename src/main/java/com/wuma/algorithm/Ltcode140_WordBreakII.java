@@ -16,79 +16,67 @@ import java.util.*;
  */
 public class Ltcode140_WordBreakII {
     public List<String> wordBreak(String s, Set<String> wordDict) {
-        Trie trie = new Trie();
-        Iterator iterator = wordDict.iterator();
-        while (iterator.hasNext()) {
-            String singlew = (String) iterator.next();
-            trie.insert(singlew);
-        }
+        List<String> res = new ArrayList<String>();
         int len = s.length();
-        for (int i = 0; i < len; i++) {
-
+        boolean[] word = new boolean[len + 1];
+        word[0] = true;
+        int max_length = 0;
+        for (String str : wordDict) {
+            max_length = Math.max(max_length, str.length());
         }
-        return new ArrayList<String>();
-    }
+        for (int i = 1; i <= len; i++) {
 
-    class TrieNode {
-        char c;
-        boolean leaf;
-        Map<Character, TrieNode> children = new HashMap<Character, TrieNode>();
-
-        public TrieNode(char c) {
-            this.c = c;
-        }
-
-        public TrieNode() {
-
-        }
-    }
-
-    class Trie {
-        private TrieNode root;
-
-        public Trie() {
-            root = new TrieNode();
-        }
-
-        public void insert(String word) {
-            Map<Character, TrieNode> children = root.children;
-            int len = word.length();
-            for (int i = 0; i < word.length(); i++) {
-                char ch = word.charAt(i);
-                TrieNode t;
-                if (children.containsKey(ch)) {
-                    t = children.get(ch);
-                } else {
-                    t = new TrieNode(ch);
-                    children.put(ch, t);
+            for (int j = Math.max(0, i - max_length); j < i; j++) {
+                if (word[j] && wordDict.contains(s.substring(j, i))) {
+                    word[i] = true;
+                    break;
                 }
-                children = t.children;
-                if (i == len - 1)
-                    t.leaf = true;
             }
         }
+        HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+        return search_str(s, wordDict, map, word);
+    }
 
-        public boolean search(String word) {
-            TrieNode t = searchNode(word);
-            return t.leaf && t != null;
+    List<String> search_str(String s, Set<String> wordDict,
+                            HashMap<String, List<String>> map, boolean[] word) {
+        if (map.containsKey(s)) {
+            return map.get(s);
         }
-
-        public boolean startsWith(String prefix) {
-            return searchNode(prefix) != null;
+        List<String> res = new ArrayList<String>();
+        if (s.length() == 0) {
+            return res;
         }
-
-        public TrieNode searchNode(String word) {
-            Map<Character, TrieNode> children = root.children;
-            TrieNode t = null;
-            int len = word.length();
-            for (int i = 0; i < len; i++) {
-                char c = word.charAt(i);
-                if (!children.containsKey(c))
-                    return null;
-                t = children.get(c);
-                children = t.children;
+        if (wordDict.contains(s)) {
+            res.add(s);
+        }
+        int end = s.length();
+        for (int i = end - 1; i >= 0; i--) {
+            String cur = s.substring(i, end);
+            if (wordDict.contains(cur) && word[i]) {
+                List<String> list = search_str(s.substring(0, i), wordDict, map, word);
+                for (String str : list) {
+                    res.add(str + " " + cur);
+                }
             }
-            return t;
+        }
+        map.put(s, res);
+        return res;
+    }
+
+
+    public static void main(String[] args) {
+        Set<String> wordDict = new HashSet<String>();
+        String ss = "catsanddog";
+        wordDict.add("cats");
+        wordDict.add("cat");
+        wordDict.add("and");
+        wordDict.add("sand");
+        wordDict.add("dog");
+        Ltcode140_WordBreakII wb = new Ltcode140_WordBreakII();
+
+        List<String> res = wb.wordBreak(ss, wordDict);
+        for (String r : res) {
+            System.out.println(r);
         }
     }
 }
