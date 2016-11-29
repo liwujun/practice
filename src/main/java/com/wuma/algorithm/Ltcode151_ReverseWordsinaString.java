@@ -21,6 +21,22 @@ package com.wuma.algorithm;
 public class Ltcode151_ReverseWordsinaString {
     public String reverseWords(String s) {
 
-        return s;
+        String[] result = s.split("\\s+");
+        if (result == null || result.length < 1) {
+            return "";
+        }
+        String out = "";
+        for (int i = result.length - 1; i > 0; i--) {
+            out += result[i] + " ";
+        }
+        return (out + result[0]).trim();
+    }
+
+    public static void main(String[] args) {
+        String str = "i  am a lord  hhh  ";
+        String[] result = str.split("\\s+");
+        for (String ss : result) {
+            System.out.println("-" + ss + "-");
+        }
     }
 }
