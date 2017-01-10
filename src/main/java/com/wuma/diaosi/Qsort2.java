@@ -12,10 +12,10 @@ public class Qsort2 {
         }
         int pivotv = b[low];
         while (low < high) {
-            while (pivotv <= b[high])
+            while (pivotv <= b[high]&&low<high)
                 high--;
             b[low] = b[high];
-            while (pivotv >= b[low])
+            while (pivotv >= b[low]&&low<high)
                 low++;
             b[high] = b[low];
         }
