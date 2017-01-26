@@ -84,6 +84,10 @@ public class Executor implements Watcher, Runnable
 
     public void closing(int rc) {
         synchronized (this) {
+            /***
+             * notify 通知wait的一个
+             * notifyAll 通知所有的一起竞争
+             */
             notifyAll();
         }
     }
