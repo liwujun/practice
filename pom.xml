@@ -92,11 +92,11 @@
         </dependency>
 
         <!-- ZooKeeper -->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.zookeeper</groupId>-->
-            <!--<artifactId>zookeeper</artifactId>-->
-            <!--<version>3.4.6</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.4.6</version>
+        </dependency>
 
         <!-- Apache Commons Collections -->
         <dependency>
