@@ -43,6 +43,8 @@ public class Executor implements Watcher, Runnable
 
     /**
      * @param args
+     * Ê¾ÀýÖ´ÐÐ args
+     * 127.0.0.1:2181 /zookeeper D:/InstallConfig.ini cmd.exe   /c   dir
      */
     public static void main(String[] args) {
         if (args.length < 4) {
