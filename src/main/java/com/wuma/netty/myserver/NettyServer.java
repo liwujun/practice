@@ -4,6 +4,7 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.apache.log4j.Logger;
 
 /**
@@ -19,7 +20,11 @@ public class NettyServer {
         bossGroup = new NioEventLoopGroup(1);
         workerGroup = new NioEventLoopGroup();
         ServerBootstrap b = new ServerBootstrap();
-        b.group(bossGroup, workerGroup);
+        /**
+         * An exception occured while executing the Java class.
+         * null: InvocationTargetException: channel or channelFactory not set
+         */
+        b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class);
         ChannelFuture ch = b.bind(2048);
     }
 
