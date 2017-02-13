@@ -7,7 +7,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import org.apache.log4j.Logger;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2017/2/13 at 16:52
  */
 public class NettyServer {
