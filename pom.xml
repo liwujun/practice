@@ -7,14 +7,14 @@
     <groupId>groupId</groupId>
     <artifactId>javapractice</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>central</id>-->
-            <!--<name>mvnCentralRepository</name>-->
-            <!--<url>http://repo.maven.apache.org/maven2</url>-->
-            <!--<layout>default</layout>-->
-        <!--</repository>-->
-    <!--</repositories>-->
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>mvnCentralRepository</name>
+            <url>http://repo.maven.apache.org/maven2</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>us.codecraft</groupId>
