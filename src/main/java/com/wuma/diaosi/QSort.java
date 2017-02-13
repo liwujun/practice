@@ -1,7 +1,7 @@
 package com.wuma.diaosi;
 
-import sun.misc.Compare;
-import sun.misc.Sort;
+//import sun.misc.Compare;
+//import sun.misc.Sort;
 
 import java.util.Stack;
 
@@ -75,11 +75,14 @@ public class QSort {
         QSort qSort = new QSort();
 //        qSort.QS(array, 0, array.length - 1);
         qSort.NonrecursionQS(array, 0, array.length - 1);
-        Sort.quicksort(arrayObj, new Compare() {
-            public int doCompare(Object o, Object o1) {
-                return (Integer) o - (Integer) o1;
-            }
-        });
+        /**
+         * jdk1.8.0_121 无法识别这个包类
+         */
+//        Sort.quicksort(arrayObj, new Compare() {
+//            public int doCompare(Object o, Object o1) {
+//                return (Integer) o - (Integer) o1;
+//            }
+//        });
         System.out.println("---");
         for (int i = 0; i < array.length; i++) {
             System.out.print(array[i] + " ");
