@@ -52,6 +52,14 @@ public class ClaLoader {
         String str2="abc";
         System.out.println("str.equals(str2): "+str.equals(str2)+"\nstr==str2: "+(str==str2));
         System.out.println("str.hashcode:"+str.hashCode()+" str2.hashcode:"+str2.hashCode());
+
+        Integer i1 = 27;
+        Integer i2 = 27;
+        Integer i3 = 2787;
+        Integer i4 = 2787;
+        System.out.println(i1 == i2);
+        System.out.println(i3 == i4);
+
     }
 
 }
