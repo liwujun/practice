@@ -3,7 +3,7 @@ package com.wuma.algorithm;
 import java.util.Arrays;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/11/18 at 12:38
  * Given an array of citations
  * (each citation is a non-negative integer) of a

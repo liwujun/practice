@@ -1,7 +1,7 @@
 package com.wuma.algorithm;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/9/22 at 14:23
  * Given a string, find the length of the longest substring without repeating characters.
  * <p/>

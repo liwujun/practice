@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/11/25 at 15:05
  * Given a string s and a dictionary of words dict,
  * determine if s can be segmented into a space-separated

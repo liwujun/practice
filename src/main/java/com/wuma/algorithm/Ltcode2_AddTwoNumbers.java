@@ -1,7 +1,7 @@
 package com.wuma.algorithm;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/9/22 at 11:04
  */
 public class Ltcode2_AddTwoNumbers {

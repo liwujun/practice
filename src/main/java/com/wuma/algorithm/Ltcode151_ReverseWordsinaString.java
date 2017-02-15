@@ -1,7 +1,7 @@
 package com.wuma.algorithm;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/11/24 at 13:58
  * Given an input string, reverse the string word by word.
  * For example,

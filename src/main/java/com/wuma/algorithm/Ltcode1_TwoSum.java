@@ -3,7 +3,7 @@ package com.wuma.algorithm;
 import java.util.Arrays;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/9/22 at 10:14
  */
 public class Ltcode1_TwoSum {

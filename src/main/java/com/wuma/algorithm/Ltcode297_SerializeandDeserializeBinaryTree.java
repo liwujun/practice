@@ -1,7 +1,7 @@
 package com.wuma.algorithm;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/11/24 at 14:12
  * Serialization is the process of converting a data structure or
  * object into a sequence of bits so that it can be stored in a file or memory buffer,

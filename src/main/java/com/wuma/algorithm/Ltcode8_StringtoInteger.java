@@ -1,7 +1,7 @@
 package com.wuma.algorithm;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/10/28 at 11:21
  * Implement atoi to convert a string to an integer.
  * Hint: Carefully consider all possible input cases.

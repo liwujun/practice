@@ -3,7 +3,7 @@ package com.wuma.algorithm;
 import java.util.HashMap;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/11/25 at 14:44
  * Design and implement a data structure for
  * Least Recently Used (LRU) cache. It should support

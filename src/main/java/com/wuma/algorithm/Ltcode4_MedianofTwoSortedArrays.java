@@ -1,7 +1,7 @@
 package com.wuma.algorithm;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/9/22 at 15:04
  * There are two sorted arrays nums1 and nums2 of size m and n respectively.
  * <p/>

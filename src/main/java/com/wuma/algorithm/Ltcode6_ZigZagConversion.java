@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/10/24 at 11:05
  * https://leetcode.com/problems/zigzag-conversion/
  * The string "PAYPALISHIRING" is written in a zigzag pattern on

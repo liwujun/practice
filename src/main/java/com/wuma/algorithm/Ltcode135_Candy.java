@@ -1,7 +1,7 @@
 package com.wuma.algorithm;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/11/18 at 12:32
  * There are N children standing in a line. Each child is assigned a rating value.
  * <p/>

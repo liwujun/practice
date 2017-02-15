@@ -1,7 +1,7 @@
 package com.wuma.algorithm;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/11/25 at 14:32
  * A linked list is given such that each node
  * contains an additional random pointer

@@ -1,7 +1,7 @@
 package com.wuma;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2017/2/10 at 15:00
  */
 public class ConcurrentTest {

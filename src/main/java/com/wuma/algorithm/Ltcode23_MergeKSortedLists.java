@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/10/31 at 10:16
  * Merge k sorted linked lists
  * and return it as one sorted list.

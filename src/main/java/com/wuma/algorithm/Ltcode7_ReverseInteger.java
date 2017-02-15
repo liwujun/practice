@@ -3,7 +3,7 @@ package com.wuma.algorithm;
 import java.math.BigInteger;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/10/26 at 11:09
  * Reverse digits of an integer.
  * <p/>

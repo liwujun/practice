@@ -1,7 +1,7 @@
 package com.wuma.algorithm;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/11/18 at 12:36
  * Given an integer array nums,
  * return the number of range sums that lie in [lower, upper] inclusive.

@@ -3,7 +3,7 @@ package com.wuma.algorithm;
 import java.util.*;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/11/7 at 17:55
  * Given a string s and a dictionary of words dict,
  * add spaces in s to construct a sentence

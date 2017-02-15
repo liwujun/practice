@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/11/7 at 16:31
  * Given a binary tree, return the postorder traversal of its nodes' values.
  * <p/>
