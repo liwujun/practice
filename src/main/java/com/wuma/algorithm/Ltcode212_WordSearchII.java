@@ -3,7 +3,7 @@ package com.wuma.algorithm;
 import java.util.*;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/11/8 at 14:05
  * Given a 2D board and a list of words from the dictionary,
  * find all words in the board.

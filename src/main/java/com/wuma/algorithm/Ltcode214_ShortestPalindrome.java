@@ -1,7 +1,7 @@
 package com.wuma.algorithm;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2016/11/18 at 12:34
  * Given a string S, you are allowed to
  * convert it to a palindrome by adding characters
