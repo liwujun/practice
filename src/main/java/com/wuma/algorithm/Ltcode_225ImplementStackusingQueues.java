@@ -1,7 +1,7 @@
 package com.wuma.algorithm;
 
 /**
- * Created by liwujun
+ * Created by wuma
  * on 2017/2/15 at 18:08
  * Implement the following operations of a stack using queues.
  * <p/>
