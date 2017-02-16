@@ -20,7 +20,7 @@ import java.util.LinkedList;
  * You may assume that all operations are valid (for example,
  * no pop or top operations will be called on an empty stack).
  */
-public class Ltcode_225ImplementStackusingQueues {
+public class Ltcode225_ImplementStackusingQueues {
     /**
      * Initialize your data structure here.
      */
