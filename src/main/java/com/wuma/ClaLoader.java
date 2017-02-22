@@ -60,6 +60,8 @@ public class ClaLoader {
         System.out.println(i1 == i2);
         System.out.println(i3 == i4);
 
+        System.out.println("ja"+"va"=="java");
+
     }
 
 }
