@@ -61,6 +61,7 @@ public class ClaLoader {
         System.out.println(i3 == i4);
 
         System.out.println("ja"+"va"=="java");
+        Hashtable hashTable=new Hashtable<Object,Object>();
 
     }
 
