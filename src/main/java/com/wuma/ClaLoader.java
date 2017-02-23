@@ -1,5 +1,9 @@
 package com.wuma;
 
+import io.netty.bootstrap.Bootstrap;
+import org.springframework.core.annotation.SynthesizedAnnotation;
+
+import java.io.*;
 import java.util.*;
 
 /**
@@ -17,8 +21,8 @@ public class ClaLoader {
         System.out.println(Integer.toBinaryString(negative >>> 1));//1111111111111111111111111111000
         System.out.println(positive >>> 1);//7
         System.out.println(Integer.toBinaryString(positive >>> 1));//111
-        System.out.println(1<<30);//1073741824
-        System.out.println(1<<31);
+        System.out.println(1 << 30);//1073741824
+        System.out.println(1 << 31);
         //question 2:
         //jdk7
         String s = new String("1");
@@ -48,10 +52,10 @@ public class ClaLoader {
         Queue<Map> queue = new PriorityQueue<Map>();
 
         System.out.println("--------");
-        String str=new String("abc");
-        String str2="abc";
-        System.out.println("str.equals(str2): "+str.equals(str2)+"\nstr==str2: "+(str==str2));
-        System.out.println("str.hashcode:"+str.hashCode()+" str2.hashcode:"+str2.hashCode());
+        String str = new String("abc");
+        String str2 = "abc";
+        System.out.println("str.equals(str2): " + str.equals(str2) + "\nstr==str2: " + (str == str2));
+        System.out.println("str.hashcode:" + str.hashCode() + " str2.hashcode:" + str2.hashCode());
 
         Integer i1 = 27;
         Integer i2 = 27;
@@ -59,9 +63,34 @@ public class ClaLoader {
         Integer i4 = 2787;
         System.out.println(i1 == i2);
         System.out.println(i3 == i4);
+        Boolean bool = new Boolean(true);
+        System.out.println("-------------------");
+        try {
+            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(new File("d:\\teststream.txt")));
+            output.writeObject(bool);
 
-        System.out.println("ja"+"va"=="java");
-        Hashtable hashTable=new Hashtable<Object,Object>();
+            InputStream is = new FileInputStream(new File("d:\\teststream.txt"));
+            ObjectInputStream ois = new ObjectInputStream(is);
+            int size = 0;
+            byte[] temp=new byte[100];
+            int bytenum=0;
+            while ((bytenum=is.read(temp))!=-1){
+                System.out.write(temp,0,bytenum);
+                size+=bytenum;
+                System.out.println("-");
+            }
+            System.out.println("byte size:" + size);
+            is.close();
+            ois.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Boolean's byte size:");
+
+
+        System.out.println("ja" + "va" == "java");
+        Hashtable hashTable = new Hashtable<Object, Object>();
 
     }
 
