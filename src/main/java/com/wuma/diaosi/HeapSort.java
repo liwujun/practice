@@ -135,6 +135,18 @@ public class HeapSort {
             System.out.print(xx[0]+" ");
             xx = adjustMinHeap(xx);
         }
+        System.out.println("二进制带符号最高位");
         System.out.println("---"+Integer.highestOneBit(100));
+        System.out.println("---"+Integer.highestOneBit(200));
+        System.out.println("---"+Integer.highestOneBit(300));
+        System.out.println("---"+Integer.highestOneBit(400));
+        System.out.println("---"+Integer.highestOneBit(-100));
+        System.out.println("---"+Integer.highestOneBit(-200));
+        System.out.println("-1's:"+Integer.highestOneBit(-1));
+        System.out.println("-1's binary:"+Integer.toBinaryString(-1));
+        System.out.println("带符号右移");
+        System.out.println("---"+(-10>>>1));
+        System.out.println("---"+(10>>>1));
+        System.out.println("---"+(-15>>>1));
     }
 }
