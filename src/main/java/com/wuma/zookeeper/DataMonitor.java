@@ -1,5 +1,6 @@
 package com.wuma.zookeeper;
 
+import org.apache.log4j.Logger;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 import org.apache.zookeeper.KeeperException.Code;
@@ -17,6 +18,7 @@ public class DataMonitor implements Watcher,AsyncCallback.StatCallback {
     boolean dead;
     DataMonitorListener listener;
     byte prevData[];
+    private final static Logger logger=Logger.getLogger(DataMonitor.class);
 
     /**
      * Other classes use the DataMonitor by implementing this method
@@ -44,19 +46,33 @@ public class DataMonitor implements Watcher,AsyncCallback.StatCallback {
         //get things started by checking if the node exists. We are going
         // to be completely event driven
         zk.exists(znode, true, this, null);
+
     }
     public void processResult(int rc, String path, Object ctx, Stat stat) {
         boolean exists;
         switch (rc) {
             case Code.Ok:
                 exists = true;
+                logger.info(znode+" exists OK is "+exists);
                 break;
             case Code.NoNode:
                 exists = false;
+                logger.info(znode+" exists NoNode is "+exists);
+                try {
+                    zk.create(znode,"hellozookeeperlidage".getBytes(),null,CreateMode.EPHEMERAL);
+                } catch (KeeperException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }finally {
+
+                }
                 break;
             case Code.SessionExpired:
+                logger.info(znode+" exists SessionExpired is ");
             case Code.NoAuth:
                 dead = true;
+                logger.info(znode+" NoAuth");
                 listener.closing(rc);
                 return;
             default:
@@ -76,6 +92,8 @@ public class DataMonitor implements Watcher,AsyncCallback.StatCallback {
             } catch (InterruptedException e) {
                 return;
             }
+        }else {
+            logger.info(znode+" not exist,please take it easey.");
         }
         if ((b == null && b != prevData)
                 || (b != null && !Arrays.equals(prevData, b))) {
