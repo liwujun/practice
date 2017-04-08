@@ -50,8 +50,8 @@ public class PornCrawler {
     }
 
     static {
-        httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(1000000);
-        httpClient.getHttpConnectionManager().getParams().setSoTimeout(1000000);
+        httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(10000);
+        httpClient.getHttpConnectionManager().getParams().setSoTimeout(10000);
         httpClient.getParams().setParameter(HttpMethodParams.USER_AGENT,
                 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36");
     }
@@ -64,58 +64,62 @@ public class PornCrawler {
         GetMethod httpGet = new GetMethod(url);
         httpGet.setRequestHeader("Cookie", "__cfduid=d484d8709ce359eb1b85f47956187b42c1491637240; PHPSESSID=ikfv4g3alalbvbo44mgcgglmn2; _ym_uid=1491637245675087036; _ym_isad=2; _ga=GA1.2.1352539430.1491637241");
         int code = 0;
-        try {
-            code = getHttpClient().executeMethod(httpGet);
-            System.out.println("response code:" + code);
+        for (int i = 0; i < 5; i++) {
+            try {
+                code = getHttpClient().executeMethod(httpGet);
+                System.out.println("response code:" + code);
 
-            if (code == HttpStatus.SC_OK) {
-                //获取页面源代码
-                InputStream inputStream = httpGet.getResponseBodyAsStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"));
-                StringBuffer stringBuffer = new StringBuffer();
-                String lineString = null;
-                while ((lineString = bufferedReader.readLine()) != null) {
-                    stringBuffer.append(lineString);
-                    stringBuffer.append("\n");
+                if (code == HttpStatus.SC_OK) {
+                    //获取页面源代码
+                    InputStream inputStream = httpGet.getResponseBodyAsStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"));
+                    StringBuffer stringBuffer = new StringBuffer();
+                    String lineString = null;
+                    while ((lineString = bufferedReader.readLine()) != null) {
+                        stringBuffer.append(lineString);
+                        stringBuffer.append("\n");
+                    }
+                    String content = stringBuffer.toString();
+                    return content;
                 }
-                String content = stringBuffer.toString();
-                return content;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return null;
     }
 
     public static void downloadImg(String url, String path_file) {
         GetMethod httpget = new GetMethod(url);
-        try {
-            File file = new File(path_file);
-            if (file.exists()){
-                return;
-            }
-            int status = getHttpClient().executeMethod(httpget);
-            if (status == HttpStatus.SC_OK) {
-                InputStream inputStream = httpget.getResponseBodyAsStream();
-
-                file.getParentFile().mkdirs();
-                FileOutputStream fileout = new FileOutputStream(file);
-                /**
-                 * 根据实际运行效果 设置缓冲区大小
-                 */
-                byte[] buffer = new byte[1024];
-                int ch = 0;
-                while ((ch = inputStream.read(buffer)) != -1) {
-                    fileout.write(buffer, 0, ch);
+        for (int i = 0; i < 5; i++) {
+            try {
+                File file = new File(path_file);
+                if (file.exists()) {
+                    return;
                 }
-                inputStream.close();
-                fileout.flush();
-                fileout.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                int status = getHttpClient().executeMethod(httpget);
+                if (status == HttpStatus.SC_OK) {
+                    InputStream inputStream = httpget.getResponseBodyAsStream();
 
+                    file.getParentFile().mkdirs();
+                    FileOutputStream fileout = new FileOutputStream(file);
+                    /**
+                     * 根据实际运行效果 设置缓冲区大小
+                     */
+                    byte[] buffer = new byte[1024];
+                    int ch = 0;
+                    while ((ch = inputStream.read(buffer)) != -1) {
+                        fileout.write(buffer, 0, ch);
+                    }
+                    inputStream.close();
+                    fileout.flush();
+                    fileout.close();
+                }
+                break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -126,13 +130,13 @@ public class PornCrawler {
         String profileImgRegex = "<div class=\"news-text\">[\\s\\S]*?<img src=\"([^<>]*?)\".*?</div>([\\s\\S]*?)<noindex>";
         int count = 0;
 
-        for (int i = 1; i < end; i++) {
+        for (int i = 18; i < end; i++) {
             String get = url.replace("^_^", i + "");
             System.out.println("Get url:" + get);
             if (i == 1) {
                 get = "http://pornfactor.net";
             }
-
+            count=i*10;
             System.out.println("Get Success");
             String content = getContent(get);
 //                    System.out.println("Get content:" + content);
