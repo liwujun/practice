@@ -50,8 +50,8 @@ public class PornCrawler {
     }
 
     static {
-        httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(10000);
-        httpClient.getHttpConnectionManager().getParams().setSoTimeout(10000);
+        httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(1000000);
+        httpClient.getHttpConnectionManager().getParams().setSoTimeout(1000000);
         httpClient.getParams().setParameter(HttpMethodParams.USER_AGENT,
                 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36");
     }
