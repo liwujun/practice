@@ -5,6 +5,7 @@ import org.springframework.core.annotation.SynthesizedAnnotation;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by wuma
@@ -72,11 +73,11 @@ public class ClaLoader {
             InputStream is = new FileInputStream(new File("d:\\teststream.txt"));
             ObjectInputStream ois = new ObjectInputStream(is);
             int size = 0;
-            byte[] temp=new byte[100];
-            int bytenum=0;
-            while ((bytenum=is.read(temp))!=-1){
-                System.out.write(temp,0,bytenum);
-                size+=bytenum;
+            byte[] temp = new byte[100];
+            int bytenum = 0;
+            while ((bytenum = is.read(temp)) != -1) {
+                System.out.write(temp, 0, bytenum);
+                size += bytenum;
                 System.out.println("-");
             }
             System.out.println("byte size:" + size);
@@ -91,6 +92,7 @@ public class ClaLoader {
 
         System.out.println("ja" + "va" == "java");
         Hashtable hashTable = new Hashtable<Object, Object>();
+        Map map = new ConcurrentHashMap();
 
     }
 
