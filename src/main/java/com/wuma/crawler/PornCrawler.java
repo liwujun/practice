@@ -120,6 +120,8 @@ public class PornCrawler {
         String profileRegex = "<div class=\"short-title clr\">[\\s\\S]*?<a href=\"(.*?)\">(.*?)</a>[\\s\\S]*?<img src=\"(.*?)\"[^<]*?/>";
         String imgRegex = "<img src=\"(.*?)\"[^<]*?/>";
         String profileImgRegex = "<div class=\"news-text\">[\\s\\S]*?<img src=\"([^<>]*?)\".*?</div>([\\s\\S]*?)<noindex>";
+        int count = 0;
+
         for (int i = 1; i < end; i++) {
             String get = url.replace("^_^", i + "");
             System.out.println("Get url:" + get);
@@ -132,7 +134,6 @@ public class PornCrawler {
 //                    System.out.println("Get content:" + content);
             Pattern pattern = Pattern.compile(articleRegex);
             Matcher matcher = pattern.matcher(content);
-            int count = 0;
             while (matcher.find()) {
                 System.out.println("µÃµ½Æ¥Åä");
                 String article = matcher.group(1);
