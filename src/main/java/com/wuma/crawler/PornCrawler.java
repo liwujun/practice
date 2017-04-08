@@ -90,13 +90,14 @@ public class PornCrawler {
     public static void downloadImg(String url, String path_file) {
         GetMethod httpget = new GetMethod(url);
         try {
+            File file = new File(path_file);
+            if (file.exists()){
+                return;
+            }
             int status = getHttpClient().executeMethod(httpget);
             if (status == HttpStatus.SC_OK) {
                 InputStream inputStream = httpget.getResponseBodyAsStream();
-                File file = new File(path_file);
-                if (file.exists()){
-                    return;
-                }
+
                 file.getParentFile().mkdirs();
                 FileOutputStream fileout = new FileOutputStream(file);
                 /**
