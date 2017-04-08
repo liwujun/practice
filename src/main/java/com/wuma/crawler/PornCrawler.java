@@ -94,6 +94,9 @@ public class PornCrawler {
             if (status == HttpStatus.SC_OK) {
                 InputStream inputStream = httpget.getResponseBodyAsStream();
                 File file = new File(path_file);
+                if (file.exists()){
+                    return;
+                }
                 file.getParentFile().mkdirs();
                 FileOutputStream fileout = new FileOutputStream(file);
                 /**
