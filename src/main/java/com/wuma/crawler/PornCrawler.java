@@ -130,7 +130,7 @@ public class PornCrawler {
         String profileImgRegex = "<div class=\"news-text\">[\\s\\S]*?<img src=\"([^<>]*?)\".*?</div>([\\s\\S]*?)<noindex>";
         int count = 0;
 
-        for (int i = 18; i < end; i++) {
+        for (int i = 35; i < end; i++) {
             String get = url.replace("^_^", i + "");
             System.out.println("Get url:" + get);
             if (i == 1) {
