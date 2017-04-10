@@ -94,9 +94,6 @@ public class PornCrawler {
         for (int i = 0; i < 5; i++) {
             try {
                 File file = new File(path_file);
-                if (file.exists()) {
-                    return;
-                }
                 int status = getHttpClient().executeMethod(httpget);
                 if (status == HttpStatus.SC_OK) {
                     InputStream inputStream = httpget.getResponseBodyAsStream();
