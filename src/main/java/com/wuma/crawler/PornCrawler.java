@@ -145,7 +145,7 @@ public class PornCrawler {
             if (content==null){
                 continue;
             }
-//                    System.out.println("Get content:" + content);
+                    System.out.println("Get content:" + content);
             Pattern pattern = Pattern.compile(articleRegex);
             Matcher matcher = pattern.matcher(content);
             while (matcher.find()) {
