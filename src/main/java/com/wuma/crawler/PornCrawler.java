@@ -20,7 +20,7 @@ public class PornCrawler {
     public static final int end = 1967;
     public static HttpClient httpClient = new HttpClient();
     public static final Logger logger = Logger.getLogger(PornCrawler.class);
-    public static final String resource_path = "/Users/phper/resources";
+    public static String resource_path = "/Users/phper/resources";
 
     public static String con_url = "jdbc:mysql://localhost:3306/porn";//characterEncoding=GBK
     public static String username = "root";
@@ -123,6 +123,12 @@ public class PornCrawler {
     }
 
     public static void main(String[] args) {
+        if (args.length < 2) {
+            System.err
+                    .println("USAGE: ExecutorParams path [args ...]");
+            System.exit(2);
+        }
+        resource_path = args[0];
 
         String articleRegex = "<article class=\"short-story\">([\\s\\S]*?)</article>";
         String profileRegex = "<div class=\"short-title clr\">[\\s\\S]*?<a href=\"(.*?)\">(.*?)</a>[\\s\\S]*?<img src=\"(.*?)\"[^<]*?/>";
@@ -130,14 +136,14 @@ public class PornCrawler {
         String profileImgRegex = "<div class=\"news-text\">[\\s\\S]*?<img src=\"([^<>]*?)\".*?</div>([\\s\\S]*?)<noindex>";
         int count = 0;
 
-        for (int i = 43; i < end; i++) {
+        for (int i = 1; i < end; i++) {
             String get = url.replace("^_^", i + "");
             System.out.println("Get url:" + get);
             if (i == 1) {
                 get = "http://pornfactor.net";
             }
             count=i*10;
-            System.out.println("Get Success");
+//            System.out.println("Get Success");
             String content = getContent(get);
             if (content==null){
                 continue;
@@ -146,7 +152,7 @@ public class PornCrawler {
             Pattern pattern = Pattern.compile(articleRegex);
             Matcher matcher = pattern.matcher(content);
             while (matcher.find()) {
-                System.out.println("得到匹配");
+//                System.out.println("得到匹配");
                 String article = matcher.group(1);
 //                System.out.println(article);
                 //得到title,url
@@ -191,7 +197,7 @@ public class PornCrawler {
                 count++;
             }
 
-            System.out.println("结束匹配");
+//            System.out.println("结束匹配");
 
         }
     }
