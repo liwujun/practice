@@ -30,57 +30,10 @@
             <param name="levelMax" value="info"/>
         </filter>
     </appender>
-    <!-- 异常 -->
-    <logger name="errorLogger" additivity="false">
-        <level value="ERROR"/>
-        <appender-ref ref="messageAppender" />
-    </logger>
-
-    <!-- 警告 -->
-    <logger name="warnLogger" additivity="false">
-        <level value="WARN"/>
-        <appender-ref ref="messageAppender" />
-    </logger>
-
-    <!-- 调试 -->
-    <logger name="debugLogger" additivity="false">
-        <level value="DEBUG"/>
-        <appender-ref ref="messageAppender" />
-    </logger>
-
-    <!-- 打点 -->
-    <logger name="eventLogger" additivity="false">
-        <level value="INFO"/>
-        <appender-ref ref="messageAppender" />
-    </logger>
-
-    <!-- outIn -->
-    <logger name="outInLogger" additivity="false">
-        <level value="INFO"/>
-        <appender-ref ref="messageAppender" />
-    </logger>
-
-    <!-- inOut -->
-    <logger name="inOutLogger" additivity="false">
-        <level value="INFO"/>
-        <appender-ref ref="messageAppender" />
-    </logger>
-
-    <!-- 消息 -->
-    <logger name="messageLogger" additivity="false">
-        <level value="INFO"/>
-        <appender-ref ref="messageAppender" />
-    </logger>
-
-    <!-- 检查 -->
-    <logger name="checkListLogger" additivity="false">
-        <level value="INFO"/>
-        <appender-ref ref="messageAppender" />
-    </logger>
 
     <root>
         <level value="INFO"/>
-        <appender-ref ref="console"/>
+        <appender-ref ref="infoAppender"/>
         <appender-ref ref="stdout"/>
     </root>
 </log4j:configuration>
