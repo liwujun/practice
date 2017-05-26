@@ -17,6 +17,19 @@
         </layout>
     </appender>
 
+    <appender name="infoAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/home/workspace/practice.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
+        <param name="Append" value="true"/>
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c %M:%L - %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="info"/>
+            <param name="levelMax" value="info"/>
+        </filter>
+    </appender>
     <!-- 异常 -->
     <logger name="errorLogger" additivity="false">
         <level value="ERROR"/>
