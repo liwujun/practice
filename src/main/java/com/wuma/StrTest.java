@@ -2,6 +2,8 @@ package com.wuma;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by user on 17/4/12.
@@ -14,5 +16,11 @@ public class StrTest {
         System.out.println(str.replace("|&","&"));
         System.out.println(str.replace("|", URLEncoder.encode("|","utf8")));
         System.out.println(str.substring(0,str.length()-1));
+        List<Integer> list=new ArrayList<>();
+        for (int i=0;i<100;i++){
+            list.add(i);
+        }
+        list=list.subList(0,7);
+        System.out.println(list.size());
     }
 }
